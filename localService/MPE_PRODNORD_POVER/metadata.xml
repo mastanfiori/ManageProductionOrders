@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Communication" Namespace="com.sap.vocabularies.Communication.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="PersonalData" Namespace="com.sap.vocabularies.PersonalData.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Analytics" Namespace="com.sap.vocabularies.Analytics.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Measures" Namespace="Org.OData.Measures.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="MPE_PRODNORD_POVER" sap:schema-version="1" xml:lang="en" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="C_MPEProdnOrderPoverType" sap:content-version="1" sap:label="Production Order Popover">
+				<Key>
+					<PropertyRef Name="ManufacturingOrder"/>
+				</Key>
+				<Property MaxLength="12" Name="ManufacturingOrder" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Manufacturing Order"/>
+				<Property MaxLength="10" Name="OrderInternalBillOfOperations" Type="Edm.String" sap:display-format="NonNegative" sap:label="Order Internal ID"/>
+				<Property MaxLength="2" Name="ManufacturingOrderCategory" Type="Edm.String" sap:display-format="NonNegative" sap:label="Order Category"/>
+				<Property MaxLength="4" Name="ProductionPlant" Type="Edm.String" sap:display-format="UpperCase" sap:label="Production Plant"/>
+				<Property MaxLength="40" Name="Material" Type="Edm.String" sap:display-format="UpperCase" sap:label="Material" sap:value-list="standard"/>
+				<Property MaxLength="40" Name="MaterialName" Type="Edm.String" sap:label="Material Description"/>
+				<Property MaxLength="30" Name="StatusName" Type="Edm.String" sap:label="Status"/>
+				<Property MaxLength="4" Name="ProductionMilestoneStatus" Type="Edm.String"/>
+				<Property MaxLength="1" Name="ManufacturingOrderImportance" Type="Edm.String" sap:display-format="UpperCase" sap:label="Order Importance"/>
+				<Property MaxLength="4" Name="ManufacturingOrderType" Type="Edm.String" sap:display-format="UpperCase" sap:label="Order Type" sap:text="ManufacturingOrderTypeName"/>
+				<Property MaxLength="40" Name="ManufacturingOrderTypeName" Type="Edm.String" sap:label="Order Type Name"/>
+				<Property Name="MfgOrderScheduledReleaseDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Scheduled Release Date"/>
+				<Property Name="MfgOrderPlannedStartDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Planned Start Date"/>
+				<Property Name="MfgOrderPlannedStartTime" Precision="0" Type="Edm.Time" sap:label="Planned Start Time"/>
+				<Property Name="MfgOrderPlannedEndDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Planned End Date"/>
+				<Property Name="MfgOrderPlannedEndTime" Precision="0" Type="Edm.Time" sap:label="Planned End Time"/>
+				<Property Name="MfgOrderActualStartDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Actual Start Date"/>
+				<Property Name="MfgOrderActualStartTime" Precision="0" Type="Edm.Time" sap:label="Actual Start Time"/>
+				<Property Name="MfgOrderActualEndDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Actual End Date"/>
+				<Property Name="MaterialGoodsReceiptDuration" Precision="3" Scale="0" Type="Edm.Decimal" sap:label="GR Processing Time"/>
+				<Property MaxLength="3" Name="ProductionUnit" Type="Edm.String" sap:label="Production Unit" sap:semantics="unit-of-measure"/>
+				<Property Name="MfgOrderPlannedTotalQty" Precision="13" Scale="3" Type="Edm.Decimal" sap:label="Total Quantity" sap:unit="ProductionUnit"/>
+				<Property Name="MfgOrderPlannedScrapQty" Precision="18" Scale="3" Type="Edm.Decimal" sap:unit="ProductionUnit"/>
+				<Property Name="ActualDeliveredQuantity" Precision="18" Scale="3" Type="Edm.Decimal" sap:unit="ProductionUnit"/>
+				<Property Name="ExpectedDeviationQuantity" Precision="18" Scale="3" Type="Edm.Decimal" sap:unit="ProductionUnit"/>
+				<Property Name="OpenQuantity" Precision="13" Scale="3" Type="Edm.Decimal" sap:unit="ProductionUnit"/>
+				<Property MaxLength="4" Name="ProductionVersion" Type="Edm.String" sap:display-format="UpperCase" sap:label="Production Version" sap:value-list="standard"/>
+				<Property MaxLength="40" Name="ProductionVersionText" Type="Edm.String" sap:label="Prodn Version Text"/>
+				<Property MaxLength="4" Name="Plant" Type="Edm.String" sap:display-format="UpperCase" sap:label="Plant"/>
+				<Property MaxLength="8" Name="ProductionLine" Type="Edm.String" sap:display-format="UpperCase" sap:label="Production Line" sap:value-list="standard"/>
+				<Property MaxLength="40" Name="WorkCenterText" Type="Edm.String" sap:label="Work Center Text"/>
+				<Property Name="NumberOfMissingMatlComp" Type="Edm.Int32"/>
+				<Property MaxLength="40" Name="MissingMaterial" Type="Edm.String"/>
+				<Property Name="MaterialComponentIsMissing" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Missing Part"/>
+				<Property MaxLength="1" Name="OrderExecutionStartIsLate" Type="Edm.String"/>
+				<Property MaxLength="1" Name="OrderExecutionEndIsLate" Type="Edm.String"/>
+				<Property MaxLength="4" Name="MRPPlant" Type="Edm.String" sap:display-format="UpperCase" sap:label="Planning Plant"/>
+				<Property MaxLength="3" Name="MRPController" Type="Edm.String" sap:display-format="UpperCase" sap:label="MRP Controller" sap:text="MRPControllerName"/>
+				<Property MaxLength="18" Name="MRPControllerName" Type="Edm.String" sap:label="MRP Controller Name"/>
+				<Property MaxLength="3" Name="ProductionSupervisor" Type="Edm.String" sap:display-format="UpperCase" sap:label="Production Supervisor" sap:text="ProductionSupervisorName"/>
+				<Property MaxLength="30" Name="ProductionSupervisorName" Type="Edm.String" sap:label="Prodn Superv. Name"/>
+				<Property MaxLength="4" Name="CurOperation" Type="Edm.String"/>
+				<Property MaxLength="40" Name="CurOperationText" Type="Edm.String" sap:label="Operation Short Text" sap:text="CurOperationText"/>
+				<Property MaxLength="3" Name="CurOperationUnit" Type="Edm.String" sap:label="Operation unit" sap:semantics="unit-of-measure"/>
+				<Property Name="CurOperationQty" Precision="13" Scale="3" Type="Edm.Decimal" sap:label="Open Quantity" sap:unit="CurOperationUnit"/>
+				<Property Name="CurOpActlExecStartDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Execution Start Date"/>
+				<Property Name="CurOpActlExecStartTime" Precision="0" Type="Edm.Time" sap:label="Execution Start Time"/>
+				<Property Name="CurOpSchedldExecEndDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Execution End Date"/>
+				<Property Name="CurOpSchedldExecEndTime" Precision="0" Type="Edm.Time" sap:label="Execution End Time"/>
+				<Property MaxLength="4" Name="NextOperation" Type="Edm.String"/>
+				<Property MaxLength="40" Name="NextOperationText" Type="Edm.String" sap:label="Operation Short Text" sap:text="NextOperationText"/>
+				<Property MaxLength="3" Name="NextOperationUnit" Type="Edm.String" sap:label="Operation unit" sap:semantics="unit-of-measure"/>
+				<Property Name="NextOperationQty" Precision="13" Scale="3" Type="Edm.Decimal" sap:label="Open Quantity" sap:unit="NextOperationUnit"/>
+				<Property Name="NextOpActlExecStartDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Execution Start Date"/>
+				<Property Name="NextOpActlExecStartTime" Precision="0" Type="Edm.Time" sap:label="Execution Start Time"/>
+				<Property Name="NextOpSchedldExecEndDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Execution End Date"/>
+				<Property Name="NextOpSchedldExecEndTime" Precision="0" Type="Edm.Time" sap:label="Execution End Time"/>
+				<Property MaxLength="12" Name="MfgOrderSuperiorMfgOrder" Type="Edm.String" sap:display-format="UpperCase" sap:label="Superior Order"/>
+				<Property MaxLength="12" Name="LeadingOrder" Type="Edm.String" sap:display-format="UpperCase" sap:label="Leading Order"/>
+				<Property MaxLength="10" Name="SDDocument" Type="Edm.String" sap:display-format="UpperCase" sap:label="Sales Document"/>
+				<Property Name="SDDocumentItem" Type="Edm.Int32"/>
+				<Property MaxLength="4" Name="SDDocumentCategory" Type="Edm.String"/>
+				<Property MaxLength="60" Name="SDDocumentCategoryName" Type="Edm.String"/>
+				<Property MaxLength="10" Name="SoldToParty" Type="Edm.String" sap:display-format="UpperCase" sap:label="Sold-to Party" sap:value-list="standard"/>
+				<Property MaxLength="80" Name="CustomerName" Type="Edm.String" sap:label="Name of Customer"/>
+				<Property MaxLength="4" Name="AuthorizationGroup" Type="Edm.String" sap:display-format="UpperCase" sap:label="Authorization"/>
+				<Property MaxLength="24" Name="WBSElement" Type="Edm.String" sap:display-format="UpperCase" sap:label="WBS Element" sap:text="WBSDescription"/>
+				<Property MaxLength="40" Name="WBSDescription" Type="Edm.String" sap:label="WBS Element Name"/>
+				<Property MaxLength="24" Name="Project" Type="Edm.String" sap:display-format="UpperCase" sap:label="Project definition" sap:text="ProjectDescription"/>
+				<Property MaxLength="40" Name="ProjectDescription" Type="Edm.String" sap:label="Project Definition Name"/>
+				<Property MaxLength="12" Name="InspectionLot" Type="Edm.String"/>
+			</EntityType>
+			<EntityType Name="I_Customer_VHType" sap:content-version="1" sap:label="Customer" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="Customer"/>
+				</Key>
+				<Property MaxLength="10" Name="Customer" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Customer" sap:text="CustomerName"/>
+				<Property MaxLength="35" Name="OrganizationBPName1" Type="Edm.String" sap:label="Name 1"/>
+				<Property MaxLength="35" Name="OrganizationBPName2" Type="Edm.String" sap:label="Name 2"/>
+				<Property MaxLength="3" Name="Country" Type="Edm.String" sap:display-format="UpperCase" sap:label="Country/Region"/>
+				<Property MaxLength="35" Name="CityName" Type="Edm.String" sap:label="City"/>
+				<Property MaxLength="35" Name="StreetName" Type="Edm.String" sap:label="Street"/>
+				<Property MaxLength="80" Name="CustomerName" Type="Edm.String" sap:label="Customer Name"/>
+				<Property MaxLength="4" Name="CustomerAccountGroup" Type="Edm.String" sap:display-format="UpperCase" sap:label="Account Group"/>
+				<Property MaxLength="4" Name="AuthorizationGroup" Type="Edm.String" sap:display-format="UpperCase" sap:label="Authorization"/>
+				<Property MaxLength="1" Name="IsBusinessPurposeCompleted" Type="Edm.String" sap:display-format="UpperCase" sap:label="Purpose Complete Flag"/>
+			</EntityType>
+			<EntityType Name="I_MaterialStdVHType" sap:content-version="1" sap:label="Material" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="Material"/>
+				</Key>
+				<Property MaxLength="40" Name="Material" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Material" sap:text="Material_Text"/>
+				<Property MaxLength="40" Name="Material_Text" Type="Edm.String" sap:creatable="false" sap:label="Material Description" sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="I_ProductionLineStdVHType" sap:content-version="1" sap:label="Production Line" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="ProductionLine"/>
+					<PropertyRef Name="Plant"/>
+				</Key>
+				<Property MaxLength="8" Name="ProductionLine" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Work Center" sap:text="ProductionLine_Text"/>
+				<Property MaxLength="40" Name="ProductionLine_Text" Type="Edm.String" sap:creatable="false" sap:label="Work Center Text" sap:updatable="false"/>
+				<Property MaxLength="4" Name="Plant" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Plant"/>
+			</EntityType>
+			<EntityType Name="I_ProductionVersionStdVHType" sap:content-version="1" sap:label="Production Version" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="Material"/>
+					<PropertyRef Name="Plant"/>
+					<PropertyRef Name="ProductionVersion"/>
+				</Key>
+				<Property MaxLength="40" Name="Material" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Material" sap:value-list="standard"/>
+				<Property MaxLength="4" Name="Plant" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Plant"/>
+				<Property MaxLength="4" Name="ProductionVersion" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Production Version" sap:text="ProductionVersionText"/>
+				<Property MaxLength="40" Name="ProductionVersionText" Type="Edm.String" sap:label="Prodn Version Text"/>
+				<Property Name="ValidityEndDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Validity End Date"/>
+				<Property Name="ValidityStartDate" Precision="0" Type="Edm.DateTime" sap:display-format="Date" sap:label="Validity Start Date"/>
+			</EntityType>
+			<EntityContainer Name="MPE_PRODNORD_POVER_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+				<EntitySet EntityType="MPE_PRODNORD_POVER.C_MPEProdnOrderPoverType" Name="C_MPEProdnOrderPover" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_PRODNORD_POVER.I_Customer_VHType" Name="I_Customer_VH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_PRODNORD_POVER.I_MaterialStdVHType" Name="I_MaterialStdVH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_PRODNORD_POVER.I_ProductionLineStdVHType" Name="I_ProductionLineStdVH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_PRODNORD_POVER.I_ProductionVersionStdVHType" Name="I_ProductionVersionStdVH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:updatable="false"/>
+			</EntityContainer>
+			<Annotations Target="MPE_PRODNORD_POVER.C_MPEProdnOrderPoverType/Material" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Material"/>
+						<PropertyValue Property="CollectionPath" String="I_MaterialStdVH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Material"/>
+									<PropertyValue Property="ValueListProperty" String="Material"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Material_Text"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_PRODNORD_POVER.C_MPEProdnOrderPoverType/ProductionVersion" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Production Version"/>
+						<PropertyValue Property="CollectionPath" String="I_ProductionVersionStdVH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="ProductionVersion"/>
+									<PropertyValue Property="ValueListProperty" String="ProductionVersion"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Material"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Plant"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ProductionVersionText"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ValidityEndDate"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ValidityStartDate"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_PRODNORD_POVER.C_MPEProdnOrderPoverType/ProductionLine" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Production Line"/>
+						<PropertyValue Property="CollectionPath" String="I_ProductionLineStdVH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="ProductionLine"/>
+									<PropertyValue Property="ValueListProperty" String="ProductionLine"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ProductionLine_Text"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Plant"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_PRODNORD_POVER.C_MPEProdnOrderPoverType/SoldToParty" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Customer"/>
+						<PropertyValue Property="CollectionPath" String="I_Customer_VH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="SoldToParty"/>
+									<PropertyValue Property="ValueListProperty" String="Customer"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="OrganizationBPName1"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="OrganizationBPName2"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Country"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="CityName"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="StreetName"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="CustomerName"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_PRODNORD_POVER.I_ProductionVersionStdVHType/Material" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Material"/>
+						<PropertyValue Property="CollectionPath" String="I_MaterialStdVH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Material"/>
+									<PropertyValue Property="ValueListProperty" String="Material"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="Material_Text"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_PRODNORD_POVER.MPE_PRODNORD_POVER_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Bool="true" Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering"/>
+				<Annotation Term="Aggregation.ApplySupported">
+					<Record>
+						<PropertyValue Property="Transformations">
+							<Collection>
+								<String>aggregate</String>
+								<String>groupby</String>
+								<String>filter</String>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue EnumMember="None" Property="Rollup"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<atom:link href="http://localhost/DUMMY_SERVICE/$metadata" rel="self" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link href="http://localhost/DUMMY_SERVICE/$metadata" rel="latest-version" xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

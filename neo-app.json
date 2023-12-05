@@ -1,0 +1,111 @@
+{
+  "welcomeFile": "index.html",
+  "routes": [
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "BGE DEV 300 Unit Testing"
+    },
+    {
+      "path": "/sap/bc/ui5_ui5",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5"
+      },
+      "description": "BGE DEV 300 Unit Testing"
+    },
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/resources/s4/cfnd/sit/reuse",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/sit_ruses1",
+        "preferLocal": true
+      },
+      "description": "s4/cfnd/sit/reuse Reuse Library"
+    },
+    {
+      "path": "/resources/sap/i2d/lo/lib/vchclf",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/i2d_lo_vchclfs1",
+        "preferLocal": true
+      },
+      "description": "sap/i2d/lo/lib/vchclf Reuse Library"
+    },
+    {
+      "path": "/resources/sap/i2d/mpe/lib/qmcomps1",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/mpe_qm_libs1",
+        "preferLocal": true
+      },
+      "description": "sap/i2d/mpe/lib/qmcomps1 Reuse Library"
+    },
+    {
+      "path": "/resources/sap/i2d/mpe/lib/commons1",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/common_libs1",
+        "preferLocal": true
+      },
+      "description": "sap/i2d/mpe/lib/commons1 Reuse Library"
+    },
+    {
+      "path": "/resources/sap/i2d/mpe/lib/popovers1",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/popovers_libs1",
+        "preferLocal": true
+      },
+      "description": "sap/i2d/mpe/lib/popovers1 Reuse Library"
+    },
+    {
+      "path": "/resources/sap/i2d/mpe/lib/aors1",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/aor_libs1",
+        "preferLocal": true
+      },
+      "description": "sap/i2d/mpe/lib/aors1 Reuse Library"
+    },
+    {
+      "path": "/resources/i2d/mpe/lib/mfgrefstructures1",
+      "target": {
+        "type": "destination",
+        "name": "BGE_DEV_300",
+        "entryPath": "/sap/bc/ui5_ui5/sap/mpe_mars_libs1",
+        "preferLocal": true
+      },
+      "description": "i2d/mpe/lib/mfgrefstructures1 Reuse Library"
+    }
+  ]
+}

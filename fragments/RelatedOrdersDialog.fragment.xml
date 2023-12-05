@@ -1,0 +1,129 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:form="sap.ui.layout.form"
+	xmlns:smartForm="sap.ui.comp.smartform" xmlns:layout="sap.ui.comp.smartform.Layout" xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:graph="sap.suite.ui.commons.networkgraph" xmlns:graphLayout="sap.suite.ui.commons.networkgraph.layout">
+	<Dialog id="idRelatedOrdersDialog" class="sapUiContentPadding" contentWidth="auto" contentHeight="auto"
+		title="{= ${i18n>relatedOrdersDialogTitle} + ' ' + ${ManufacturingOrder}}">
+		<content>
+			<MessageStrip id="idRelatedOrdersNoParentMessageStrip" text="{i18n>noRelatedParentOrder}"
+				visible="{= ${MfgOrderSplitParentOrder} === '' ? true : false}"/>
+			<smartForm:SmartForm id="idRelatedOrdersSmartForm" title="{i18n>relatedOrdersSmartFormTitle}"
+				visible="{= ${MfgOrderSplitParentOrder} === '' ? false : true}">
+				<smartForm:layout>
+					<smartForm:ColumnLayout id="idRelatedOrdersSmartFormLayout" columnsXL="2" columnsL="2" columnsM="2"/>
+				</smartForm:layout>
+				<smartForm:Group id="idRelatedOrdersParentOrderGroup">
+					<smartForm:GroupElement id="idRelatedOrdersParentOrderGroupElementOrder">
+						<smartField:SmartField id="idRelatedOrdersParentOrder" editable="false" value="{MfgOrderSplitParentOrder}"/>
+					</smartForm:GroupElement>
+					<smartForm:GroupElement id="idRelatedOrdersParentOrderGroupElementMaterial">
+						<smartField:SmartField id="idRelatedOrdersParentMaterial" editable="false" value="{Material}"/>
+					</smartForm:GroupElement>
+					<smartForm:GroupElement id="idRelatedOrdersParentOrderGroupElementQuantity">
+						<smartField:SmartField id="idRelatedOrdersParentQuantity" editable="false" value="{MfgOrderPlannedTotalQty}"/>
+					</smartForm:GroupElement>
+				</smartForm:Group>
+			</smartForm:SmartForm>
+			<smartTable:SmartTable id="idRelatedOrdersSmartTable" entitySet="C_MfgOrderSplitChildOrder" tableType="ResponsiveTable"
+				useExportToExcel="false" beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true"
+				header="{i18n>childOrders}" showRowCount="true" enableAutoBinding="true" demandPopin="true" class="sapUiResponsiveContentPadding"
+				beforeRebindTable="onBeforeRebindRelatedOrdersTable" requestAtLeastFields="MfgOrderSplitLeadingOrder">
+				<smartTable:customToolbar>
+					<OverflowToolbar id="idRelatedOrdersOverflowToolbar" design="Transparent">
+						<ToolbarSpacer id="idRelatedOrdersToolbarSpacer"/>
+						<OverflowToolbarToggleButton id="idRelatedOrdersTableButton" icon="sap-icon://table-view" tooltip="{i18n>relatedOrdersTableToggleTooltip}" press="onPressTableRelatedOrders" pressed="true"/>
+						<OverflowToolbarToggleButton id="idRelatedOrdersNetworkGraphButton" icon="sap-icon://overview-chart" tooltip="{i18n>relatedOrdersGraphToggleTooltip}" press="onPressGraphRelatedOrders"/>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+				<Table id="idRelatedOrdersInnerTable" growing="true">
+					<columns>
+						<Column id="idRelatedOrdersChildOrderColumn" hAlign="Left">
+							<customData>
+								<core:CustomData id="idRelatedOrdersChildOrderCustomData" key="p13nData"
+									value='\{"columnKey": "MfgOrderSplitChildOrder", "leadingProperty": "MfgOrderSplitChildOrder", "columnIndex": 1}'/>
+							</customData>
+							<Text id="idRelatedOrdersChildOrderColumnText" text="{i18n>relatedOrdersChildOrderColumn}"/>
+						</Column>
+						<Column id="idRelatedOrdersMaterialColumn" hAlign="Left">
+							<customData>
+								<core:CustomData id="idRelatedOrdersMaterialCustomData" key="p13nData"
+									value='\{"columnKey": "Material", "leadingProperty": "Material", "columnIndex": 2}'/>
+							</customData>
+							<Text id="idRelatedOrdersMaterialColumnText" text="{i18n>relatedOrdersMaterialColumn}"/>
+						</Column>
+						<Column id="idRelatedOrdersSFIColumn" hAlign="Left">
+							<customData>
+								<core:CustomData id="idRelatedOrdersSFICustomData" key="p13nData"
+									value='\{"columnKey": "SerialNumber", "leadingProperty": "SerialNumber", "columnIndex": 3}'/>
+							</customData>
+							<Text id="idRelatedOrdersSFIColumnText" text="{i18n>relatedOrdersSFIColumn}"/>
+						</Column>
+						<Column id="idRelatedOrdersQuantityColumn" hAlign="Left">
+							<customData>
+								<core:CustomData id="idRelatedOrdersQuantityCustomData" key="p13nData"
+									value='\{"columnKey": "MfgOrderPlannedTotalQty", "leadingProperty": "MfgOrderPlannedTotalQty", "columnIndex": 4}'/>
+							</customData>
+							<Text id="idRelatedOrdersQuantityColumnText" text="{i18n>relatedOrdersQuantityColumn}"/>
+						</Column>
+						<Column id="idRelatedOrdersInspectionLotColumn" hAlign="Left">
+							<customData>
+								<core:CustomData id="idRelatedOrdersInspectionLotCustomData" key="p13nData"
+									value='\{"columnKey": "InspectionLot", "leadingProperty": "InspectionLot", "columnIndex": 5}'/>
+							</customData>
+							<Text id="idRelatedOrdersInspectionLotColumnText" text="{i18n>relatedOrdersInspectionLotColumn}"/>
+						</Column>
+					</columns>
+					<ColumnListItem id="idRelatedOrdersColumnListItems">
+						<cells>
+							<Text id="idRelatedOrdersChildOrderCellText" text="{MfgOrderSplitChildOrder}"/>
+							<Text id="idRelatedOrdersMaterialCellText"
+								text="{parts:[{path: 'Material'},{path: 'MaterialName'}], formatter: '.formatter.setMaterialFormat' }"/>
+							<VBox id="idRelatedOrdersSerialNumberVBox">
+								<Link id="idRelatedOrdersSFICellLink" visible="{= ${NumberOfSerialNumbers} > 1 ? true: false }"
+									text="{parts:[{path:'NumberOfSerialNumbers'},{path:'SerialNumber'}], formatter: '.formatter.formatSerialNumbers' }"
+									press="onSerialNumbersLinkPress"/>
+								<Text id="idRelatedOrdersSFICellText" text="{SerialNumber}" visible="{= ${NumberOfSerialNumbers} > 1 ? false: true }"/>
+							</VBox>
+							<Text id="idRelatedOrdersQuantityCellText"
+								text="{parts:[{path:'MfgOrderPlannedTotalQty'},{path: 'ProductionUnit'}], formatter: '.formatter.setTotalQuantityFormat' }"/>
+							<Text id="idRelatedOrdersInspectionLotCellText" text="{InspectionLot}"/>
+						</cells>
+					</ColumnListItem>
+				</Table>
+			</smartTable:SmartTable>
+			<graph:Graph	id="idRelatedOrdersGraph" enableWheelZoom="false" orientation="{RelatedOrderGraphSettings>/orientation}" visible="false"
+							nodes="{RelatedOrdersGraph>/nodes}" lines="{RelatedOrdersGraph>/lines}" groups="{RelatedOrdersGraph>/groups}">
+				<graph:statuses>
+				</graph:statuses>
+				<graph:layoutAlgorithm>
+					<graphLayout:LayeredLayout id="idRelatedOrdersGraphLayeredLayout" mergeEdges="{RelatedOrderGraphSettings>/mergeEdges}" nodePlacement="{RelatedOrderGraphSettings>/nodePlacement}" nodeSpacing="{RelatedOrderGraphSettings>/nodeSpacing}"/>
+				</graph:layoutAlgorithm>
+				<graph:nodes>
+					<graph:Node id="idRelatedOrdersGraphNode" maxWidth="{RelatedOrdersGraph>maxWidth}" 
+								headerCheckBoxState="{RelatedOrdersGraph>headerCheckBoxState}" key="{RelatedOrdersGraph>key}" 
+								title="{RelatedOrdersGraph>title}" icon="{RelatedOrdersGraph>icon}" group="{RelatedOrdersGraph>group}"
+								attributes="{path:'attributes', templateShareable:true}" shape="{RelatedOrdersGraph>shape}" status="{RelatedOrdersGraph>status}">
+						<graph:attributes>
+							<graph:ElementAttribute id="idRelatedOrdersGraphNodeElementAttribute" label="{RelatedOrdersGraph>label}" value="{RelatedOrdersGraph>value}"/>
+						</graph:attributes>
+					</graph:Node>
+				</graph:nodes>
+				<graph:lines>
+					<graph:Line id="idRelatedOrdersGraphLine" arrowPosition="{RelatedOrderGraphSettings>/arrowPosition}" arrowOrientation="{RelatedOrderGraphSettings>/arrowOrientation}" 
+								from="{RelatedOrdersGraph>from}" to="{RelatedOrdersGraph>to}" status="{RelatedOrdersGraph>status}"/>
+				</graph:lines>
+				<graph:groups>
+					<graph:Group	id="idRelatedOrdersGraphGroup" key="{RelatedOrdersGraph>key}" icon="sap-icon://measure" 
+									headerCheckBoxState="{RelatedOrdersGraph>headerCheckboxState}" title="{RelatedOrdersGraph>title}" status="{RelatedOrdersGraph>status}"/>
+				</graph:groups>
+			</graph:Graph>
+		</content>
+		<endButton >
+			<Button id="idOkButtonRelatedOrdersDialog" press="onPressOkRelatedOrders" text="{i18n>ok}"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Communication" Namespace="com.sap.vocabularies.Communication.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Aggregation" Namespace="Org.OData.Aggregation.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="PersonalData" Namespace="com.sap.vocabularies.PersonalData.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Analytics" Namespace="com.sap.vocabularies.Analytics.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="Measures" Namespace="Org.OData.Measures.V1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://localhost/" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="MPE_CHANGE_RECORD_EXEC_SRV" sap:schema-version="1" xml:lang="en" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="C_OrdSpcfcChgRecdOpnType" sap:content-version="1" sap:label="Order Specific Open Change Records">
+				<Key>
+					<PropertyRef Name="ChangeRecord"/>
+					<PropertyRef Name="RoutingItemRelevance"/>
+				</Key>
+				<Property MaxLength="20" Name="ChangeRecord" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Change Record" sap:text="ChgRecordDescriptionText"/>
+				<Property MaxLength="3" Name="RoutingItemRelevance" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Relevance"/>
+				<Property MaxLength="3" Name="ChangeRecordType" Type="Edm.String" sap:display-format="UpperCase" sap:label="Record Type" sap:text="ChangeRecordType_Text" sap:value-list="standard"/>
+				<Property MaxLength="40" Name="ChangeRecordType_Text" Type="Edm.String" sap:creatable="false" sap:label="Issue Type Text" sap:updatable="false"/>
+				<Property MaxLength="40" Name="ChgRecordDescriptionText" Type="Edm.String" sap:label="Description"/>
+				<Property MaxLength="10" Name="Partner" Type="Edm.String" sap:display-format="UpperCase" sap:label="Change Responsible" sap:value-list="standard"/>
+				<NavigationProperty FromRole="FromRole_assoc_E3BD3253D5815BAB661C6534431CD23F" Name="to_ChangeRecordTypeText" Relationship="MPE_CHANGE_RECORD_EXEC_SRV.assoc_E3BD3253D5815BAB661C6534431CD23F" ToRole="ToRole_assoc_E3BD3253D5815BAB661C6534431CD23F"/>
+				<NavigationProperty FromRole="FromRole_assoc_F138281C4890BE8295F1CC487BCF7F78" Name="to_OrdSpcfcChgRecdType" Relationship="MPE_CHANGE_RECORD_EXEC_SRV.assoc_F138281C4890BE8295F1CC487BCF7F78" ToRole="ToRole_assoc_F138281C4890BE8295F1CC487BCF7F78"/>
+			</EntityType>
+			<EntityType Name="C_OrdSpcfcChgRecdTypeType" sap:content-version="1" sap:label="Order Specific Change Record Types">
+				<Key>
+					<PropertyRef Name="ChangeRecordType"/>
+					<PropertyRef Name="RoutingItemRelevance"/>
+				</Key>
+				<Property MaxLength="3" Name="ChangeRecordType" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Record Type"/>
+				<Property MaxLength="3" Name="RoutingItemRelevance" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Relevance"/>
+				<Property MaxLength="40" Name="ChangeRecordTypeDesc" Type="Edm.String" sap:label="Issue Type Text"/>
+			</EntityType>
+			<EntityType Name="I_ChangeRecordTypeStdVHType" sap:content-version="1" sap:label="Change Record Type" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="ChangeRecordType"/>
+				</Key>
+				<Property MaxLength="3" Name="ChangeRecordType" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Record Type" sap:text="ChangeRecordType_Text"/>
+				<Property MaxLength="40" Name="ChangeRecordType_Text" Type="Edm.String" sap:creatable="false" sap:label="Issue Type Text" sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="I_ChangeRecordTypeTextType" sap:content-version="1" sap:label="Change Record Type Text">
+				<Key>
+					<PropertyRef Name="Language"/>
+					<PropertyRef Name="ChangeRecordType"/>
+				</Key>
+				<Property MaxLength="2" Name="Language" Nullable="false" Type="Edm.String" sap:label="Language Key"/>
+				<Property MaxLength="3" Name="ChangeRecordType" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Issue Type" sap:value-list="standard"/>
+				<Property MaxLength="40" Name="ChangeRecordTypeDesc" Type="Edm.String" sap:label="Issue Type Text"/>
+			</EntityType>
+			<EntityType Name="I_ChgRecdCntctPersnVHType" sap:content-version="1" sap:label="Change Responsible" sap:value-list="true">
+				<Key>
+					<PropertyRef Name="Partner"/>
+				</Key>
+				<Property MaxLength="10" Name="Partner" Nullable="false" Type="Edm.String" sap:display-format="UpperCase" sap:label="Change Responsible" sap:text="PersonFullName"/>
+				<Property Name="BusinessPartnerUUID" Type="Edm.Guid" sap:label="BP GUID"/>
+				<Property MaxLength="1" Name="BusinessPartnerCategory" Type="Edm.String" sap:display-format="UpperCase" sap:label="BP Category"/>
+				<Property MaxLength="4" Name="AuthorizationGroup" Type="Edm.String" sap:display-format="UpperCase" sap:label="Authorization Group"/>
+				<Property Name="BusinessPartnerIsBlocked" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Central Block"/>
+				<Property MaxLength="1" Name="IsBusinessPurposeCompleted" Type="Edm.String" sap:display-format="UpperCase" sap:label="Purpose Completed"/>
+				<Property MaxLength="10" Name="Person" Type="Edm.String" sap:display-format="UpperCase" sap:label="Person Number"/>
+				<Property MaxLength="40" Name="PartnerFirstName" Type="Edm.String" sap:label="First Name"/>
+				<Property MaxLength="40" Name="PartnerLastName" Type="Edm.String" sap:label="Last Name"/>
+				<Property MaxLength="80" Name="PersonFullName" Type="Edm.String" sap:label="Full Name"/>
+				<Property MaxLength="12" Name="UserID" Type="Edm.String" sap:display-format="UpperCase" sap:label="User ID"/>
+				<Property MaxLength="30" Name="MobilePhoneNumber" Type="Edm.String" sap:display-format="UpperCase" sap:label="Mobile Phone" sap:semantics="tel"/>
+				<Property MaxLength="30" Name="AddressPhoneNumber" Type="Edm.String" sap:display-format="UpperCase" sap:label="Address Phone" sap:semantics="tel"/>
+				<Property MaxLength="241" Name="EmailAddress" Type="Edm.String" sap:label="Email Address" sap:semantics="email"/>
+			</EntityType>
+			<Association Name="assoc_F138281C4890BE8295F1CC487BCF7F78" sap:content-version="1">
+				<End Multiplicity="1" Role="FromRole_assoc_F138281C4890BE8295F1CC487BCF7F78" Type="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdOpnType"/>
+				<End Multiplicity="1" Role="ToRole_assoc_F138281C4890BE8295F1CC487BCF7F78" Type="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdTypeType"/>
+				<ReferentialConstraint>
+					<Principal Role="ToRole_assoc_F138281C4890BE8295F1CC487BCF7F78">
+						<PropertyRef Name="RoutingItemRelevance"/>
+						<PropertyRef Name="ChangeRecordType"/>
+					</Principal>
+					<Dependent Role="FromRole_assoc_F138281C4890BE8295F1CC487BCF7F78">
+						<PropertyRef Name="RoutingItemRelevance"/>
+						<PropertyRef Name="ChangeRecordType"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="assoc_E3BD3253D5815BAB661C6534431CD23F" sap:content-version="1">
+				<End Multiplicity="1" Role="FromRole_assoc_E3BD3253D5815BAB661C6534431CD23F" Type="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdOpnType"/>
+				<End Multiplicity="0..1" Role="ToRole_assoc_E3BD3253D5815BAB661C6534431CD23F" Type="MPE_CHANGE_RECORD_EXEC_SRV.I_ChangeRecordTypeTextType"/>
+			</Association>
+			<EntityContainer Name="MPE_CHANGE_RECORD_EXEC_SRV_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+				<EntitySet EntityType="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdOpnType" Name="C_OrdSpcfcChgRecdOpn" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdTypeType" Name="C_OrdSpcfcChgRecdType" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_CHANGE_RECORD_EXEC_SRV.I_ChangeRecordTypeStdVHType" Name="I_ChangeRecordTypeStdVH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_CHANGE_RECORD_EXEC_SRV.I_ChangeRecordTypeTextType" Name="I_ChangeRecordTypeText" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false"/>
+				<EntitySet EntityType="MPE_CHANGE_RECORD_EXEC_SRV.I_ChgRecdCntctPersnVHType" Name="I_ChgRecdCntctPersnVH" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:searchable="true" sap:updatable="false"/>
+				<AssociationSet Association="MPE_CHANGE_RECORD_EXEC_SRV.assoc_E3BD3253D5815BAB661C6534431CD23F" Name="assoc_E3BD3253D5815BAB661C6534431CD23F" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false">
+					<End EntitySet="C_OrdSpcfcChgRecdOpn" Role="FromRole_assoc_E3BD3253D5815BAB661C6534431CD23F"/>
+					<End EntitySet="I_ChangeRecordTypeText" Role="ToRole_assoc_E3BD3253D5815BAB661C6534431CD23F"/>
+				</AssociationSet>
+				<AssociationSet Association="MPE_CHANGE_RECORD_EXEC_SRV.assoc_F138281C4890BE8295F1CC487BCF7F78" Name="assoc_F138281C4890BE8295F1CC487BCF7F78" sap:content-version="1" sap:creatable="false" sap:deletable="false" sap:updatable="false">
+					<End EntitySet="C_OrdSpcfcChgRecdOpn" Role="FromRole_assoc_F138281C4890BE8295F1CC487BCF7F78"/>
+					<End EntitySet="C_OrdSpcfcChgRecdType" Role="ToRole_assoc_F138281C4890BE8295F1CC487BCF7F78"/>
+				</AssociationSet>
+			</EntityContainer>
+			<Annotations Target="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdOpnType/ChangeRecordType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Order Specific Change Record Types"/>
+						<PropertyValue Property="CollectionPath" String="C_OrdSpcfcChgRecdType"/>
+						<PropertyValue Bool="false" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="ChangeRecordType"/>
+									<PropertyValue Property="ValueListProperty" String="ChangeRecordType"/>
+								</Record>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="RoutingItemRelevance"/>
+									<PropertyValue Property="ValueListProperty" String="RoutingItemRelevance"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ChangeRecordTypeDesc"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_CHANGE_RECORD_EXEC_SRV.C_OrdSpcfcChgRecdOpnType/Partner" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Change Responsible"/>
+						<PropertyValue Property="CollectionPath" String="I_ChgRecdCntctPersnVH"/>
+						<PropertyValue Bool="true" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Partner"/>
+									<PropertyValue Property="ValueListProperty" String="Partner"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="PersonFullName"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="UserID"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="EmailAddress"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_CHANGE_RECORD_EXEC_SRV.I_ChangeRecordTypeTextType/ChangeRecordType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Change Record Type"/>
+						<PropertyValue Property="CollectionPath" String="I_ChangeRecordTypeStdVH"/>
+						<PropertyValue Bool="false" Property="SearchSupported"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="ChangeRecordType"/>
+									<PropertyValue Property="ValueListProperty" String="ChangeRecordType"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="ChangeRecordType_Text"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_CHANGE_RECORD_EXEC_SRV.MPE_CHANGE_RECORD_EXEC_SRV_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Bool="true" Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering"/>
+				<Annotation Term="Aggregation.ApplySupported">
+					<Record>
+						<PropertyValue Property="Transformations">
+							<Collection>
+								<String>aggregate</String>
+								<String>groupby</String>
+								<String>filter</String>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue EnumMember="None" Property="Rollup"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="MPE_CHANGE_RECORD_EXEC_SRV.MPE_CHANGE_RECORD_EXEC_SRV_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+				<Annotation Term="Org.OData.Capabilities.V1.BatchSupport">
+					<Record Type="Org.OData.Capabilities.V1.BatchSupportType">
+						<PropertyValue Bool="true" Property="ReferencesAcrossChangeSetsSupported"/>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<atom:link href="http://localhost/DUMMY_SERVICE/$metadata" rel="self" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link href="http://localhost/DUMMY_SERVICE/$metadata" rel="latest-version" xmlns:atom="http://www.w3.org/2005/Atom"/>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

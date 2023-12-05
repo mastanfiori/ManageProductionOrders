@@ -1,0 +1,19 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition id="idSerialNumbersPopoverFragment" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:smartForm="sap.ui.comp.smartform" xmlns:f="sap.f" xmlns:smartTable="sap.ui.comp.smarttable">
+	
+	<Popover id="idSerialNumbersPopover" title="{i18n>SerialNumbers}" showHeader="true" contentWidth="16rem" contentHeight="24rem" placement="Auto">
+		<NavContainer id="idNavConSerialNumbersPopover">
+			<Page id="idSerialNumbersPopoverPage" showHeader="false">
+				<List id="idSerialNumbersPopoverList" items="{ path: '/I_SerialNumberManufacturingOrd' }">
+					<StandardListItem	id="idSerialNumbersPopoverStandardListItem" title="{SerialNumber}" type="Inactive"
+										iconDensityAware="false" iconInset="false"/>
+				</List>
+			</Page>
+		</NavContainer>
+	</Popover>
+</core:FragmentDefinition>

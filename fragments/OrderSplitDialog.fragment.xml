@@ -1,0 +1,169 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<Dialog xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:sf="sap.ui.comp.smartfield" id="OrderSplitDialog"
+	xmlns:f="sap.ui.layout.form" title="{OrderSplit>/sTitle}" draggable="true" resizable="true" xmlns:smartTable="sap.ui.comp.smarttable"
+	busy="{OrderSplit>/dialogBusy}">
+	<content>
+		<MessageStrip text="{i18n>parallelSeqErrorMsg}" type="Error" id="idOSMessageStrip" class="sapUiSmallMarginTop sapUiSmallMarginBottom"
+			visible="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}"></MessageStrip>
+		<!--Parent Order-->
+		<f:SimpleForm id="idOSParentOrderSection" layout="ColumnLayout" title="{i18n>OrderInformation}" columnsXL="2" columnsL="2" columnsM="2"
+			editable="false">
+			<f:content>
+				<!--Plant-->
+				<Label text="{/#C_ManageProductionOrderType/ProductionPlant/@sap:label}" id="idOSPlantLabel" labelFor="idOSPlant"/>
+				<Text text="{OrderData>/ProductionPlant}" id="idOSPlant"/>
+				<!--WBS ELement-->
+				<Label text="{/#C_ManageProductionOrderType/WBSElement/@sap:label}" labelFor="idOSWBSElementParent" id="idOSWBSElementParentLabel"/>
+				<Text text="{OrderData>/WBSElement}" id="idOSWBSElementParent" emptyIndicatorMode="On"/>
+				<!--Material-->
+				<Label text="{/#C_ManageProductionOrderType/Material/@sap:label}" labelFor="idOSMaterialParent" id="idOSMaterialParentLabel"/>
+				<Text id="idOSMaterialParent" core:require="{ formatMessage: 'sap/base/strings/formatMessage' }"
+					text="{ parts: [ 'i18n>HEADER_FIELD_VALUE', 'OrderData>/Material', 'OrderData>/MaterialName' ], formatter: 'formatMessage' }"/>
+				<!--Operation (to be split)-->
+				<Label text="{i18n>splitOperation}" labelFor="idOSSplitOperationText" id="idOSSplitOperationLabel"/>
+				<Text text="{OperationData>/ManufacturingOrderOperation}" id="idOSSplitOperationText"/>
+				<!--Operation Quantity-->
+				<Label id="idOSMfgOperPlannedTotalQtyLabel" text="{/#C_ManageoperationsType/OpPlannedTotalQuantity/@sap:label}"
+					labelFor="idOSMfgOperPlannedTotalQty"/>
+				<ObjectNumber number="{OperationData>/OpPlannedTotalQuantity}" unit="{OrderData>/ProductionUnit}" id="idOSMfgOperPlannedTotalQty"/>
+				<!--Flexible Indicator-->
+				<Label text="{/#C_ManageProductionOrderType/ProdnProcgIsFlexible/@sap:label}" labelFor="idOSProdnProcgIsFlexible"
+					id="idOSProdnProcgIsFlexibleLabel"/>
+				<Text text="{OrderData>/ProdnProcgFlexibilityIndName}" id="idOSProdnProcgIsFlexible"
+					visible="{=${OrderData>/OrderIsShopFloorOrder} === 'X'}"/>
+			</f:content>
+		</f:SimpleForm>
+		<!--Child Order-->
+		<f:SimpleForm id="idOSChildOrderSection" layout="ColumnLayout" title="{i18n>childOrderInfo}" columnsXL="2" columnsL="2" columnsM="2"
+			editable="true" visible="{=${OrderSplit>/sSelectedButtonKey} === 'SPLT_SP' || ${OrderSplit>/sSelectedButtonKey} === 'SPLT_DP' }"
+			blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}">
+			<f:content>
+				<!--WBS Element (Input)-->
+				<sf:SmartLabel labelFor="idOSWBSElementInputChild" id="idOSWBSElementInputChildLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" editable="true" value="{WBSElement}" id="idOSWBSElementInputChild"
+					visible="{OrderSplit>/WBSElementIsEditable}"/>
+				<!--WBS ELement (Non-Editable)-->
+				<Label text="{/#C_ManageProductionOrderType/WBSElement/@sap:label}" labelFor="idOSWBSElementChild" id="idOSWBSElementChildLabel"/>
+				<Text text="{OrderData>/WBSElement}" id="idOSWBSElementChild" emptyIndicatorMode="On" visible="{=!${OrderSplit>/WBSElementIsEditable}}"/>
+				<!--Child Material (editable)-->
+				<sf:SmartLabel labelFor="idOSMaterialChildSF" id="idOSMaterialChildSFLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" value="{Material}" id="idOSMaterialChildSF" mandatory="true"
+					visible="{=${OrderSplit>/sSelectedButtonKey} === 'SPLT_DP'}" valueState="{OrderSplit>/ValueStateMaterialChild}"/>
+				<!--Child Material (text only)-->
+				<Label labelFor="idOSMaterialChildText" visible="{=${OrderSplit>/sSelectedButtonKey} === 'SPLT_SP'}" id="idOSMaterialChildLabel"
+					text="{/#C_ManageProductionOrderType/Material/@sap:label}"/>
+				<Text core:require="{ formatMessage: 'sap/base/strings/formatMessage' }"
+					text="{ parts: [ 'i18n>HEADER_FIELD_VALUE', 'OrderData>/Material', 'OrderData>/MaterialName' ], formatter: 'formatMessage' }"
+					visible="{=${OrderSplit>/sSelectedButtonKey} === 'SPLT_SP'}" id="idOSMaterialChildText"/>
+				<!--Order Type (Input)-->
+				<sf:SmartLabel labelFor="idOSManufacturingOrderType" id="idOSManufacturingOrderTypeLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" editable="true" value="{ManufacturingOrderType}" id="idOSManufacturingOrderType"
+					mandatory="true" visible="{OrderSplit>/OrderTypeIsEditable}" valueState="{OrderSplit>/OrderTypeValueState}" showValueStateMessage="false"></sf:SmartField>
+				<!--Order Type (Non-Editable)  ManufacturingOrderTypeName -->
+				<Label text="{/#C_ManageProductionOrderType/ManufacturingOrderType/@sap:label}" labelFor="idOSOrderTypeChild" id="idOSOrderTypeChildLabel"/>
+				<Text core:require="{ formatMessage: 'sap/base/strings/formatMessage' }" id="idOSOrderTypeChild"
+					visible="{=!${OrderSplit>/OrderTypeIsEditable}}"
+					text="{ parts: [ 'i18n>HEADER_FIELD_VALUE', 'OrderData>/ManufacturingOrderType', 'OrderData>/ManufacturingOrderTypeName' ], formatter: 'formatMessage' }"/>
+				<!--Sales Document Header (non-editable)-->
+				<Label text="{/#C_ManageProductionOrderType/SalesDocument/@sap:label}" labelFor="idOSSalesDocumentTextChild"
+					id="idOSSalesDocumentTextLabelChild"/>
+				<Text text="{OrderData>/SalesDocument}" id="idOSSalesDocumentTextChild" visible="{=${OrderData>/SalesDocument} !== ''}"/>
+				<!--Sales Document Header (editable)-->
+				<sf:SmartLabel labelFor="idOSSalesDocument" id="idOSSalesDocumentLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" editable="true" value="{SalesDocument}" id="idOSSalesDocument"
+					visible="{=${OrderData>/SalesDocument} === ''}"/>
+				<!--Sales Document Header (non-editable)-->
+				<Label text="{/#C_ManageProductionOrderType/SalesDocumentItem/@sap:label}" labelFor="idOSSalesDocumentItemTextChild"
+					id="idOSSalesDocumentItemTextLabelChild"/>
+				<Text text="{OrderData>/SalesDocumentItem}" id="idOSSalesDocumentItemTextChild" visible="{=${OrderData>/SalesDocumentItem} !== '000000'}"/>
+				<!--Sales Document Item (editable)-->
+				<sf:SmartLabel labelFor="idOSSalesDocumenttem" id="idOSSalesDocumenttemLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" editable="true" value="{SalesDocumentItem}" id="idOSSalesDocumenttem"
+					visible="{=${OrderData>/SalesDocumentItem} === '000000'}"/>
+				<!--Child Manufacturing Order (editable)-->
+				<Label labelFor="idOSManufOrderChild" text="{i18n>ChildOrder}" id="idOSManufOrderChildLabel"/>
+				<Input id="idOSManufOrderChild" value="{OrderSplit>/ChildOrder}" showValueHelp="false"/>
+			</f:content>
+		</f:SimpleForm>
+		<!--Scheduling-->
+		<f:SimpleForm id="idOSSchedulingSection" layout="ColumnLayout" title="{i18n>Scheduling}" columnsXL="2" columnsL="2" columnsM="2"
+			editable="true" blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}">
+			<f:content>
+				<Label id="idOSBasicStartDateLabel" labelFor="idOSBasicStartDate" text="{/#C_ManageProductionOrderType/MfgOrderPlannedStartDate/@sap:label}"/>
+				<Input type="Date" id="idOSBasicStartDate" value="{path: 'OrderData>/MfgOrderPlannedStartDate', formatter: '.formatter.setDateFormat'}"/>
+				<!--Basic End Date-->
+				<Label id="idOSBasicEndDateLabel" labelFor="idOSBasicEndDate" text="{/#C_ManageProductionOrderType/MfgOrderPlannedEndDate/@sap:label}"/>
+				<Input type="Date" id="idOSBasicEndDate" value="{path: 'OrderData>/MfgOrderPlannedEndDate', formatter: '.formatter.setDateFormat'}"/>
+				<!--Scheduling Type-->
+				<sf:SmartLabel labelFor="idOSBasicSchedulingType" id="idOSBasicSchedulingTypeLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" editable="true" value="{BasicSchedulingType}" id="idOSBasicSchedulingType"
+					mandatory="true" valueState="{OrderSplit>/ValueStateBasicSchedulingType}" showValueStateMessage="false">
+					<sf:configuration>
+						<sf:Configuration controlType="dropDownList" id="idOSBasicSchedulingTypeConfig"/>
+					</sf:configuration>
+				</sf:SmartField>
+			</f:content>
+		</f:SimpleForm>
+		<!--Material for Cost Transfer (only when PMMO is disabled-->
+		<f:SimpleForm id="idOSCostTransfer" layout="ColumnLayout" title="{i18n>MaterialForCostTransfer}" columnsXL="2" columnsL="2" columnsM="2"
+			editable="true" visible="{=!${OrderSplit>/isPMMOActive}}" blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}">
+			<f:content>
+				<!--By Product-->
+				<sf:SmartLabel labelFor="idOSByProduct" id="idOSByProductLabel"/>
+				<sf:SmartField entitySet="C_ManageProductionOrder" value="{Material}" id="idOSByProduct" mandatory="true"
+					textLabel="{/#C_MfgOrderSplitChildOrderType/MfgOrderSplitByProduct/@sap:label}" valueState="{OrderSplit>/ValueStateByProduct}"
+					showValueStateMessage="false"/>
+				<!--Batch-->
+				<!--<sf:SmartLabel labelFor="idOSBatch" id="idOSBatchLabel"/>-->
+				<!--<sf:SmartField entitySet="C_Manageoperations" value="{Batch}" id="idOSBatch" mandatory="true"/>-->
+				<!--Storage Location-->
+				<sf:SmartLabel labelFor="idOSStorageLocation" id="idOSStorageLocationLabel"/>
+				<sf:SmartField entitySet="I_MfgOrderBasicFilter" value="{StorageLocation}" id="idOSStorageLocation"/>
+			</f:content>
+		</f:SimpleForm>
+		<!--Serial Number Table-->
+		<f:SimpleForm id="idOSSerialNumbers" title="{i18n>SerialNumbers}" editable="true"
+			blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}"
+			visible="{= (${OrderSplit>/sSelectedButtonKey} === 'SPLT_SP' || ${OrderSplit>/sSelectedButtonKey} === 'SPLT_DP') &amp;&amp; ${OrderSplit>/isTableSerialNumbersVisible}}">
+			<f:content>
+				<smartTable:SmartTable id="idOSSerialNumbersTable" entitySet="C_MfgOrdOpSerialNumberForSplit" tableType="ResponsiveTable"
+					enableAutoBinding="{= ${OrderSplit>/sSelectedButtonKey} === 'SPLT_DP' || ${OrderSplit>/sSelectedButtonKey} === 'SPLT_SP'}"
+					useVariantManagement="false" useExportToExcel="false" useTablePersonalisation="false" demandPopin="true" showRowCount="true"
+					requestAtLeastFields="ShopFloorItem" beforeRebindTable="onBeforeRebindTable" initiallyVisibleFields="SerialNumber,Material">
+					<Table mode="MultiSelect" growing="true" growingScrollToLoad="true" id="idOSTableEnablingMultiSelect"
+						selectionChange="onSelectionChangeSerialNumberTable"></Table>
+				</smartTable:SmartTable>
+			</f:content>
+		</f:SimpleForm>
+		<!--Quantities-->
+		<f:SimpleForm id="idOSSplitQtyFields" layout="ColumnLayout" title="{i18n>SplitQuantity}" columnsXL="2" columnsL="2" columnsM="2"
+			blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}" editable="true"
+			visible="{=${OrderSplit>/isTableSerialNumbersVisible} === false || ${OrderSplit>/sSelectedButtonKey} === 'SPLT_OS'}">
+			<f:content>
+				<!--Split Quantity-->
+				<Label id="idOSSplitQtyLabel" labelFor="idOSSplitQty" text="{i18n>SplitQuantity}"/>
+				<Input type="Number" id="idOSSplitQty" liveChange="onLiveChangeSplitQty" description="{OrderData>/ProductionUnit}" required="true"
+					valueState="{OrderSplit>/ValueStateSplitQty}" valueStateText="{OrderSplit>/ValueStateTextSplitQty}" value="{OrderSplit>/SplitQty}"/>
+				<!--Rework Quantity-->
+				<Label id="idOSReworkQtyLabel" labelFor="idOSReworkQty" text="{i18n>ReworkQuantity}"/>
+				<Input type="Number" id="idOSReworkQty" liveChange="onLiveChangeReworkQty" description="{OrderData>/ProductionUnit}"
+					valueState="{OrderSplit>/ValueStateReworkQty}" valueStateText="{OrderSplit>/ValueStateTextReworkQty}" value="{OrderSplit>/ReworkQty}"
+					visible="{=${OrderSplit>/OrderHasReworkOperation} === 'X'}"/>
+			</f:content>
+		</f:SimpleForm>
+	</content>
+	<beginButton>
+		<!--Next/Ok Button-->
+		<!--text="{=${OrderData>/OrderIsShopFloorOrder} === 'X' ? ${i18n>ok} : ${i18n>Next} }"-->
+		<Button text="{i18n>ok}" press="onOk" id="idOrderSplitOkButton"
+			enabled="{= (${OrderSplit>/isTableSerialNumbersVisible} &amp;&amp; ${OrderSplit>/aSelectedSerialNumbers}.length > 0 ) || (!${OrderSplit>/isTableSerialNumbersVisible} &amp;&amp; ${OrderSplit>/ValueStateSplitQty} === 'None' ) }"
+			blocked="{=${OrderSplit>/OrderHasParallelSequence} === 'X'}"></Button>
+	</beginButton>
+	<endButton>
+		<Button text="{i18n>Cancel}" press="onCancel" id="OrderSplitCancelButton"></Button>
+	</endButton>
+</Dialog>

@@ -1,0 +1,134 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="i2d.mpe.orders.manages1.blocks.ConfirmationBlockController" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns="sap.m">
+	<HBox id="AllConfirmations" visible="true" width="100%">
+		<smartTable:SmartTable beforeRebindTable="onHandleRebindAllConfirmationTable" demandPopin="true" header="{common_i18n>allConfirmations}"
+			enableAutoBinding="{DetailModel>/bEnableAutoBinding}" entitySet="C_MfgOrderConfirmation" id="idAllConfirmationTable"
+			persistencyKey='pKeyAllConfTab' width="100%" showRowCount="false" tableType="ResponsiveTable" useExportToExcel="true"
+			useTablePersonalisation="true" useVariantManagement="false" beforeExport="handleBeforeExport">
+			<smartTable:customData id="customdataConfirms">
+				<core:CustomData id="coredataConfirms" key="p13nDialogSettings" value='\{"columns":\{"visible": true, "payload": \{"visibleItemsThreshold": 9\}\}\}'/>
+			</smartTable:customData>
+			<smartTable:customToolbar>
+				<OverflowToolbar design="Transparent" id="idConfirmsToolbar"></OverflowToolbar>
+		    </smartTable:customToolbar>
+			<Table fixedLayout="false" id="idAllConfirmationOrderTable" growing="true" growingThreshold="10" itemPress="handleConfirmationSelect">
+				<columns id="idColumns">
+					<Column id="idColumnCustConfirmationText"
+						customData:p13nData='\{"columnKey":"CustConfirmationText", "leadingProperty":["MfgOrderConfirmationGroup","ConfirmationText","ManufacturingOrder"]\}'>
+						<header>
+							<Text id="CustConfirmationText" text="{common_i18n>ConfirmationText}" tooltip="{common_i18n>ConfirmationText}"/>
+						</header>
+					</Column>
+					<Column id="idColumnCustConfirmationCounter" customData:p13nData='\{"columnKey":"CustConfirmationCounter", "leadingProperty":["MfgOrderConfirmationCount"]\}'>
+						<header>
+							<Text id="CustConfirmationCounter" text="{common_i18n>ConfirmationCount}" tooltip="{common_i18n>ConfirmationCount}"/>
+						</header>
+					</Column>
+					<Column id="idColumnCustConfirmationIsReversed" customData:p13nData='\{"columnKey":"CustConfirmationIsReversed", "leadingProperty":["IsReversed"]\}'>
+						<header>
+							<Text id="CustConfirmationIsReversed" text="{common_i18n>isReversed}" tooltip="{common_i18n>isReversed}"/>
+						</header>
+					</Column>
+					<Column id="idColumnIsReversal" customData:p13nData='\{"columnKey":"IsReversal", "leadingProperty":["IsReversal"]\}'>
+						<header>
+							<Text id="IsReversal" text="{common_i18n>IsReversal}" tooltip="{common_i18n>IsReversal}"/>
+						</header>
+					</Column>
+						<Column id="idColumnCancldMfgOrderConfCount" customData:p13nData='\{"columnKey":"CancldMfgOrderConfCount", "leadingProperty":["CancldMfgOrderConfCount"]\}'>
+						<header>
+							<Text id="CancldMfgOrderConfCount" text="{common_i18n>CancldMfgOrderConfCount}" tooltip="{common_i18n>CancldMfgOrderConfCount}"/>
+						</header>
+					</Column>
+					<Column id="idColumnManufacturingOrderOperation" customData:p13nData='\{"columnKey":"ManufacturingOrderOperation", "leadingProperty":["ManufacturingOrderOperation"]\}'>
+						<header>
+							<Text id="ManufacturingOrderOperation" text="{common_i18n>OperationText}" tooltip="{common_i18n>OperationText}"/>
+						</header>
+					</Column>
+					<Column id="idColumnCustEnteredByUser" customData:p13nData='\{"columnKey":"CustEnteredByUser", "leadingProperty":["EnteredByUser"]\}'>
+						<header>
+							<Text id="CustEnteredByUser" text="{common_i18n>ConfirmedBy}" tooltip="{common_i18n>ConfirmedBy}"/>
+						</header>
+					</Column>
+					<!--<Column width="15em"-->
+					<Column id="idColumnMfgOrderConfirmationEntryDate"
+						customData:p13nData='\{"columnKey":"CustPostingDate", "edmType":"Edm.DateTime", "leadingProperty":["MfgOrderConfirmationEntryDate","MfgOrderConfirmationEntryTime"]\}'>
+						<header>
+							<Text id="MfgOrderConfirmationEntryDate" text="{common_i18n>EntryDate}" tooltip="{common_i18n>EntryDate}"/>
+						</header>
+					</Column>
+					<Column id="idColumnCustIsFinalConfirmation" customData:p13nData='\{"columnKey":"CustIsFinalConfirmation", "leadingProperty":["IsFinalConfirmation"]\}'>
+						<header>
+							<Text id="CustIsFinalConfirmation" text="{common_i18n>FinalConfirmation}" tooltip="{common_i18n>FinalConfirmation}"/>
+						</header>
+					</Column>
+					<Column id="idColumnConfirmationTotalQuantity"
+						customData:p13nData='\{"columnKey":"ConfirmationTotalQuantity", "leadingProperty":["ConfirmationTotalQuantity","ConfirmationUnit"]\}'>
+						<header>
+							<Text id="ConfirmationTotalQuantity" text="{common_i18n>Quantity}" tooltip="{common_i18n>Quantity}"/>
+						</header>
+					</Column>
+					<Column id="idColumnConfirmationYield"
+						customData:p13nData='\{"columnKey":"ConfirmationYield", "leadingProperty":["ConfirmationYieldQuantity","ConfirmationUnit"]\}'>
+						<header>
+							<Text id="ConfirmationYield" text="{common_i18n>ConfirmYield}" tooltip="{common_i18n>ConfirmYield}"/>
+						</header>
+					</Column>
+					<Column id="idColumnConfirmationScrap" customData:p13nData='\{"columnKey":"ConfirmationScrap", "leadingProperty":["ConfirmationScrapQuantity"]\}'>
+						<header>
+							<Text id="ConfirmationScrap" text="{common_i18n>ConfirmScrap}" tooltip="{common_i18n>ConfirmScrap}"/>
+						</header>
+					</Column>
+					<Column id="idColumnConfirmationRework"
+						customData:p13nData='\{"columnKey":"ConfirmationRework", "leadingProperty":["ConfirmationReworkQuantity"]\}'>
+						<header>
+							<Text id="ConfirmationRework" text="{common_i18n>CofirmRework}" tooltip="{common_i18n>CofirmRework}"/>
+						</header>
+					</Column>
+				</columns>
+				<ColumnListItem id="idColumnListItem" type="Navigation">
+					<cells>
+						<VBox id="idVBox1" class="sapUiTinyMarginTopBottom">
+							<ObjectIdentifier id="titleMfgOrderConfnGroup" title="{parts:[{path:'MfgOrderConfirmationGroup'}], formatter:'.formatter.removeLeadingZeros'}" titleActive="false" tooltip="{parts:[{path:'MfgOrderConfirmationGroup'}], formatter:'.formatter.removeLeadingZeros'}"/>
+							<!--<Text text="{ConfirmationText}" tooltip="{ConfirmationText}" -->
+							<!--	visible="{= ${ConfirmationText} !== '' &amp;&amp; ${ConfirmationText} !== null }"></Text>-->
+						</VBox>
+						<Text id="idTextMfgOrderConfirmationCount" text="{parts:[{path:'MfgOrderConfirmationCount'}], formatter:'.formatter.removeLeadingZeros'}" tooltip="{parts:[{path:'MfgOrderConfirmationCount'}], formatter:'.formatter.removeLeadingZeros'}"></Text>
+						<Text id="idTextIsReversed" text="{parts:[{path:'IsReversed'}], formatter:'.formatter.isRevText'}"></Text>
+						<Text id="idTextIsReversal" text="{parts:[{path:'IsReversal'}], formatter:'.formatter.isRevText'}"></Text>
+					    <Text id="idTextCancldMfgOrderConfCount" text="{parts:[{path:'CancldMfgOrderConfCount'}], formatter:'.formatter.removeLeadingZeros'}"></Text>
+						<Text id="idTextMfgOrderOp" text="{ManufacturingOrderOperation}" tooltip="{ManufacturingOrderOperation}"></Text>
+						<Text id="idTextEnteredByUser" text="{EnteredByUser}" tooltip="{EnteredByUser}"></Text>
+						<VBox id="idVBox2" alignContent="End" justifyContent="End">
+							<Text id="idTextMfgOrderConfEntryDate" text="{path: 'MfgOrderConfirmationEntryDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'MMMEEEd', UTC:true}}"></Text>
+							<Text id="idTextMfgOrderConfEntryTime"
+								text="{path: 'MfgOrderConfirmationEntryTime', type: 'sap.ui.model.odata.type.Time', formatOptions: {style: 'short', relativeScale: 'auto' }}"></Text>
+						</VBox>
+						<Text id="idTextIsFinalConfirmation" text="{parts:[{path:'IsFinalConfirmation'}], formatter:'.formatter.finalConfirmation'}"></Text>
+						<HBox id="idHbox1">
+							<Label id="idLabelConfTotalQty" design="Bold" text="{path: 'ConfirmationTotalQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'ConfirmationTotalQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Label>
+							<Text id="idTextConfirmationUnit" class="sapUiTinyMarginBegin" text="{ConfirmationUnit}" tooltip="{ConfirmationUnit}"></Text>
+						</HBox>
+						<HBox id="idHbox2">
+							<Text id="idTextCnfYieldQuantity" text="{path: 'ConfirmationYieldQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'ConfirmationYieldQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Text>
+							<Text id="idTextConfUnit" class="sapUiTinyMarginBegin" text="{ConfirmationUnit}" tooltip="{ConfirmationUnit}"></Text>
+						</HBox>
+						<HBox id="idHbox3">
+							<Text id="idTextCnfScrapQuantity" text="{path: 'ConfirmationScrapQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'ConfirmationScrapQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Text>
+							<Text id="idTextCnUnit" class="sapUiTinyMarginBegin" text="{ConfirmationUnit}" tooltip="{ConfirmationUnit}"></Text>
+						</HBox>
+						<HBox id="idHbox4">
+							<Text id="idTextCnfReworkQuantity" text="{path: 'ConfirmationReworkQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'ConfirmationReworkQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Text>
+							<Text id="idTextCnfUnit" class="sapUiTinyMarginBegin" text="{ConfirmationUnit}" tooltip="{ConfirmationUnit}"></Text>
+						</HBox>
+					</cells>
+				</ColumnListItem>
+			</Table>
+		</smartTable:SmartTable>
+	</HBox>
+</mvc:View>

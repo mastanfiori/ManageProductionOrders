@@ -1,0 +1,154 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="i2d.mpe.orders.manages1.controller.Object" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap"
+	xmlns:core="sap.ui.core" xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar"
+	xmlns:commonsBlock="sap.i2d.mpe.lib.commons1.blocks" xmlns:customBlock="i2d.mpe.orders.manages1.blocks">
+	<semantic:FullscreenPage id="idOrderDetailsPage" busy="{objectView>/busy}" busyIndicatorDelay="{objectView>/delay}" showFooter="false">
+		<semantic:content>
+			<uxap:ObjectPageLayout id="idOrderObjectPageLayout" upperCaseAnchorBar="false" enableLazyLoading="{DetailModel>/bEnableAutoBinding}">
+				<uxap:headerTitle>
+					<uxap:ObjectPageHeader id="idOrderObjectPageHeader" objectTitle="{parts:[{path: 'ManufacturingOrder'}]}" headerDesign="Light"
+						objectSubtitle="">
+						<uxap:actions>
+							<Button id="idButtonEditOrder" text="{i18n>EditOrderButton}" press="handleEditOrderPress" type="Emphasized"
+								tooltip="{i18n>EditOrderTooltip}" visible="{=${OrderIsShopFloorOrder} === '' &amp;&amp; ${ActionButtonVisiblity>/EditButtonVisible}}"/>
+							<!--Change Order -->
+							<Button id="idButtononPressOrdSpcfcChange"
+								text="{path: '/#C_ProductionHoldType/ProdnHoldIsAppldForOrderChg/@sap:label', model: 'HoldModel'}" press="onPressOrdSpcfcChange"
+								visible="{ActionButtonVisiblity>/bIsOrderSpecificHoldAvailable}" type="Transparent"/>
+							<!--Manage Order Change Button (navigates to MSFR transaction in SAP GUI -->
+							<Button id="idButtononPressGoToConfigPage" text="{common_i18n>manageChangeOrder}" press="onPressDisplayOrdScpfcChange" type="Transparent"
+								visible="{=${ActionButtonVisiblity>/bIsDisplayOrderSpecificHoldAvailable} &amp;&amp; ${ActionButtonVisiblity>/bIsDisplayOrderSpecificHoldNavigable}}"/>
+							<Button id="idOneOrderReleaseButton" text="{i18n>orderReleaseButton}" press="handleReleaseOrderPress" type="Transparent"
+								tooltip="{i18n>orderReleaseButton}" enabled="{path : 'OrderStatusInternalID',formatter : '.formatter.setEnableStatusRelease'}"/>
+							<!--type="{ButtonEmphasize/ReleaseEmphasize}"/>-->
+							<Button id="idOrderHoldButton" text="{i18n>OrderHoldButton}" type="Transparent" press="handleOrderHoldButton"
+								tooltip="{i18n>OrderHoldTooltip}" visible="{= ${OrderIsShopFloorOrder} === 'X'}"
+								enabled="{parts:[{path:'OrderIsShopFloorOrder'},{path:'OrderStatusInternalID'}], formatter : '.formatter.setEnableHoldButton'}"/>
+							<Button id="idOneOrderMDRereadButton" text="{common_i18n>masterDataRereadButton}" press="handleRereadButtonPress" type="Transparent"
+								tooltip="{common_i18n>masterDataRereadButton}"
+								enabled="{parts:[{path:'OrderIsShopFloorOrder'},{path:'OrderStatusInternalID'}], formatter : '.formatter.setEnableRereadMD'}"/>
+							<!--Order Split Menu Button-->
+							<MenuButton text="{i18n>splitOrderButton}" id="SplitOrderMenuButton" enabled="{objectView>/isOrderSplitEnabled}"
+								visible="{=!${IsCloudSystem}}">
+								<Menu id="SplitOrderMenu">
+									<MenuItem text="{i18n>splitSameMaterial}" press="onPressOrderSplit" key="SPLT_SP" id="SplitOrderItemSameMat"/>
+									<!--<MenuItem text="{i18n>splitDiffMaterial}" press="onPressOrderSplit" key="SPLT_DP" id="SplitOrderItemDiffMat"-->
+									<!--visible="{= ${OrderIsShopFloorOrder} === ''}"/>-->
+									<MenuItem text="{i18n>splitToWarehouse}" press="onPressOrderSplit" key="SPLT_OS" id="SplitOrderItemWarehouse"
+										visible="{= ${OrderIsShopFloorOrder} === ''}"/>
+								</Menu>
+							</MenuButton>
+							<MenuButton text="{i18n>display}" id="idDisplayMenuButton">
+								<Menu id="idDisplayMenu">
+									<MenuItem id="idButtonRelatedOrders" text="{i18n>displayRelatedOrdersButton}" press="onPressDisplayRelatedOrders"
+										enabled="{=${MfgOrderSplitStatus} !== ''}"/>
+									<MenuItem id="idDisplayConfiguration" text="{i18n>dispConfiguration}" press="onPressGoToConfigPage"
+										enabled="{parts:[{path:'ProductConfiguration'}], formatter : '.formatter.setEnableConfigButton'}"/>
+								</Menu>
+							</MenuButton>
+						</uxap:actions>
+					</uxap:ObjectPageHeader>
+				</uxap:headerTitle>
+				<uxap:headerContent>
+					<!--<core:Fragment fragmentName="i2d.mpe.orders.manages1.blocks.OrderDetailsHeader" type="XML"/>-->
+					<core:Fragment id="idOrderFragOrderDetailsHeader" fragmentName="sap.i2d.mpe.lib.commons1.blocks.OrderDetailsHeader" type="XML"/>
+				</uxap:headerContent>
+				<uxap:sections>
+					<uxap:ObjectPageSection id="idIssuesSection" title="{i18n>Issues}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idIssuesSubSection" title="">
+								<uxap:blocks>
+									<!--<customBlock:IssuesBlock id="idIssuesBlock"/>-->
+									<commonsBlock:IssuesBlock id="idIssuesBlock"/>
+									<VBox id="idVboxDefects" visible="{= ${OrderIsShopFloorOrder} === 'X'}">
+										<core:Fragment id="idOrderFragDefectMessageStrip" fragmentName="sap.i2d.mpe.lib.qmcomps1.view.DefectsFragment.DefectMessageStrip" type="XML"/>
+									</VBox>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idOrderInformationSection" title="{i18n>OrderInformation}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idOrderInformationSubSection" title="">
+								<uxap:blocks>
+									<customBlock:OrderInformationBlock id="idOrderInformationBlock"/>
+									<!--<commonsBlock:OrderInformationBlock id="idOrderInformationBlock"/>-->
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idShopFloorItemSection" title="{i18n>SerialNumbers}" titleUppercase="false"
+						visible="{= ${OrderIsShopFloorOrder} === 'X' &amp;&amp; ${shopflooritems>/}.length > 0 ? true : false}">
+						<uxap:subSections id="ShopFloorSubsection">
+							<uxap:ObjectPageSubSection id="idShopFloorItemSubSection" title="">
+								<uxap:blocks id="idShopFloorBlock">
+									<customBlock:ShopFloorItemBlock id="idShopFloorItemBlock"/>
+									<!--<commonsBlock:ShopFloorItemBlock id="idShopFloorItemBlock"/>-->
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idComponentsSection" title="{i18n>Components}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idComponentsSubSection" title="">
+								<uxap:blocks>
+									<commonsBlock:ComponentsBlock id="idComponentsBlock"/>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idOperationsSchedule" title="{i18n>OrderSchedule}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idOperationsSchedulesSubSection" title="" visible="{DetailModel>/bSequenceTableVisible}">
+								<uxap:blocks>
+									<commonsBlock:OrderScheduleBlock id="idOperationsScheduleBlock"/>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+							<uxap:ObjectPageSubSection id="idSequenceGraphSubSection" title="" visible="{DetailModel>/bSequenceGraphVisible}"
+								class="sapUxAPObjectPageSubSectionFitContainer">
+								<uxap:blocks>
+									<commonsBlock:OperationSequenceGraph columnLayout="4" id="idOperationSequenceSection"/>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idOrdConfirmationSection" title="{i18n>OrderConfirmations}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idOrdConfirmationSubSection" title="">
+								<uxap:blocks>
+									<customBlock:ConfirmationBlock id="idOrderConfirmationBlock"/>
+									<!--<commonsBlock:ConfirmationBlock id="idOrderConfirmationBlock"/>-->
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idInspectionlotSection" title="{i18n>InspectionLot}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idInspectionlotSubSection" title="">
+								<uxap:blocks>
+									<customBlock:InspectionBlock id="idInspectionBlock"/>
+									<!--<commonsBlock:InspectionBlock id="idInspectionBlock"/>-->
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="idObjectPageDefects" title="{i18n>Defects}" visible="{= ${OrderIsShopFloorOrder} === 'X'}"
+						titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection id="idSubObjectPageDefects">
+								<uxap:blocks>
+									<core:Fragment id="idObjectFragDefectRecordingList" fragmentName="sap.i2d.mpe.lib.qmcomps1.view.DefectsFragment.defectRecordingList"
+										type="XML"/>
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+				</uxap:sections>
+			</uxap:ObjectPageLayout>
+		</semantic:content>
+	</semantic:FullscreenPage>
+</mvc:View>

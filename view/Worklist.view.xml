@@ -1,0 +1,141 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="i2d.mpe.orders.manages1.controller.Worklist" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:semantic="sap.m.semantic" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:smartTable="sap.ui.comp.smarttable" xmlns="sap.m"
+	xmlns:smartVariants="sap.ui.comp.smartvariants" xmlns:f="sap.f">
+	<semantic:FullscreenPage id="idMonitorOrdersPage" floatingFooter="true" >
+		<semantic:content>
+			<f:DynamicPage id="synamicPage"> 
+				<f:title>
+					<f:DynamicPageTitle id="worklistTitle">
+						<f:heading>
+							<smartVariants:SmartVariantManagement id="idSmartVManagement" persistencyKey="SmartVariantKey" showCreateTile="true"
+								showExecuteOnSelection="true" showShare="true" save="handleSaveVariant" manage="handleManageVariant" select="handleSelectVariant"/>
+						</f:heading>
+					</f:DynamicPageTitle>
+				</f:title>
+				<f:header>
+					<f:DynamicPageHeader id="worklistHeader">
+						<f:content>
+							<smartFilterBar:SmartFilterBar smartVariant="idSmartVManagement" afterVariantLoad="handleVariantLoad"
+								afterVariantSave="handleAfterVariantSave" beforeVariantFetch="handleVariantFetch" beforeVariantSave="handleBeforeVariantSave"
+								useToolbar="false" enableBasicSearch="true" entityType="C_ManageProductionOrderType" filterChange="handleFilterChange" id="idSmartFilterBar"
+								persistencyKey="SmartFilterPKey" initialized="loadInitialVariant" search="handleGOBtnPress">
+								<smartFilterBar:customData>
+									<core:CustomData id="idSmartFilterBarCustomData" key="dateFormatSettings" value='\{"UTC":true\}'/>
+								</smartFilterBar:customData>
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigManufacturingOrder" groupId="C_ManageProductionOrderType" index="1" key="ManufacturingOrder" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigStatusFilter" groupId="C_ManageProductionOrderType" controlType="dropDownList" index="2" key="CustomStatus"
+										label="{i18n>StatusFilter}" visibleInAdvancedArea="true" tooltip="{i18n>StatusFilter}">
+										<smartFilterBar:customControl>
+											<MultiComboBox id="idCustomStatusMultiSelectBox" selectedKeys="1,2,3,5,6,7,8" selectionFinish="onCategorySelectionFinish"
+												items="{path:'customFiltersModel>/status', templateShareable:false}" selectionChange="handleStatusSelectionChange" customData:hasValue="true">
+												<core:Item id="idCustomStatusMultiSelectBoxItem" key="{customFiltersModel>id}" text="{customFiltersModel>name}" tooltip="{customFiltersModel>name}"/>
+											</MultiComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMaterial" groupId="C_ManageProductionOrderType" index="3" key="Material" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigIssueFilter" groupId="C_ManageProductionOrderType" controlType="dropDownList" index="4" key="CustomIssue" label="{i18n>IssueFilter}"
+										visibleInAdvancedArea="true" tooltip="{i18n>IssueFilter}">
+										<smartFilterBar:customControl>
+											<MultiComboBox id="idCustomIssuesMultiSelectBox" items="{path:'customHoldFiltersModel>/issues', templateShareable:false}" selectedKeys="None" selectionChange="handleIssueSelectionChange"
+												customData:hasValue="true" selectionFinish="onCategorySelectionFinish">
+												<core:Item id="idCustomIssuesMultiSelectBoxItem" key="{customHoldFiltersModel>id}" text="{customHoldFiltersModel>name}" tooltip="{customHoldFiltersModel>name}"/>
+											</MultiComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigDelayFilter" groupId="C_ManageProductionOrderType" index="5" key="CustomDelay" label="{i18n>DelayFilter}"
+										visibleInAdvancedArea="true" tooltip="{i18n>DelayFilter}">
+										<smartFilterBar:customControl>
+											<Select id="idCustomDelayMultiSelectBox" items="{path:'customFiltersModel>/delay', templateShareable:false}" change="handleDelaySelectionChange">
+												<core:Item id="idCustomDelayMultiSelectBoxItem" key="{customFiltersModel>key}" text="{customFiltersModel>value}" tooltip="{customFiltersModel>value}"/>
+											</Select>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderScheStartDate" groupId="C_ManageProductionOrderType" key="MfgOrderScheduledStartDate" index="6"
+										conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+										operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>ScheduledStart}" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigScheduledEnd" groupId="C_ManageProductionOrderType" index="7" key="MfgOrderScheduledEndDate"
+										label="{i18n>ScheduledEnd}"
+										conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+										operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigActualStartDate" groupId="C_ManageProductionOrderType" index="8" key="MfgOrderActualStartDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>ActualStartDate}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigConfirmedEnd" groupId="C_ManageProductionOrderType" index="9" key="MfgOrderConfirmedEndDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'NEXTDAYS,NEXTWEEK,NEXTWEEKS,NEXTMONTH,NEXTMONTHS,QUARTER,NEXTYEAR,NEXTYEARS',exclude: true}}}"
+										label="{i18n>ConfirmedEnd}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigActualEndDate" groupId="C_ManageProductionOrderType" index="10" key="MfgOrderActualEndDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>ActualEndDate}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigOrderCreation" groupId="C_ManageProductionOrderType" index="11" key="MfgOrderCreationDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'NEXTDAYS,NEXTWEEK,NEXTWEEKS,NEXTMONTH,NEXTMONTHS,QUARTER,NEXTYEAR,NEXTYEARS',exclude: true}}}"
+										label="{i18n>OrderCreation}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigLastChangeDate" groupId="C_ManageProductionOrderType" index="12" key="LastChangeDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'NEXTDAYS,NEXTWEEK,NEXTWEEKS,NEXTMONTH,NEXTMONTHS,QUARTER,NEXTYEAR,NEXTYEARS',exclude: true}}}"
+										label="{i18n>LastChanged}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderPlannedStartDate" groupId="C_ManageProductionOrderType" index="13" key="MfgOrderPlannedStartDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>PlannedStart}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderPlannedReleaseDate" groupId="C_ManageProductionOrderType" index="14" key="MfgOrderPlannedReleaseDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>PlannedRelease}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderPlannedEndDate" groupId="C_ManageProductionOrderType" index="15" key="MfgOrderPlannedEndDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>PlannedEnd}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderScheduledReleaseDate" groupId="C_ManageProductionOrderType" index="16" key="MfgOrderScheduledReleaseDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>ScheduledRelease}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigMfgOrderActualReleaseDate" groupId="C_ManageProductionOrderType" index="17" key="MfgOrderActualReleaseDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'FROM,TO,DATERANGE,TODAY,LASTDAYS,NEXTDAYS,LASTWEEK,LASTWEEKS,NEXTWEEK,NEXTWEEKS,MONTH,LASTMONTH,LASTMONTHS,LASTYEAR,LASTYEARS,THISYEAR,NEXTYEAR,NEXTYEARS'}}}"
+										label="{i18n>ActualRelease}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idConfigCommitmentDate" groupId="C_ManageProductionOrderType" index="18" key="MfgOrderTotalCommitmentDate"
+											conditionType="{module:'sap.ui.comp.config.condition.DateRangeType', 
+											operations: { filter: {path: 'key', contains: 'NEXTDAYS,NEXTWEEK,NEXTWEEKS,NEXTMONTH,NEXTMONTHS,QUARTER,NEXTYEAR,NEXTYEARS',exclude: true}}}"
+										label="{i18n>CommitmentDate}" visibleInAdvancedArea="false"></smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration id="idSmartFilterBarPRT" groupId="C_ManageProductionOrderType" index="19" controlType="dropDownList" key="OpHasAssgdProdnRsceTools"
+										label="{common_i18n>MfgOrderOperationPRT}" visibleInAdvancedArea="false">
+										<smartFilterBar:customControl>
+											<MultiComboBox id="idSmartFilterBarPRTMultiComboBox" selectionFinish="onCategorySelectionFinish" selectionChange="handlePRTChange">
+												<customData>
+													<core:CustomData id="idSmartFilterBarPRTMultiComboBoxCustomData" key="hasValue" value="true"></core:CustomData>
+												</customData>
+												<items>
+													<core:Item id="idSmartFilterBarPRTMultiComboBoxOne" key="true" text="{common_i18n>Yes}" tooltip="{common_i18n>Yes}"/>
+													<core:Item id="idSmartFilterBarPRTMultiComboBoxTwo" key="false" text="{common_i18n>No}" tooltip="{common_i18n>No}"/>
+												</items>
+											</MultiComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+							</smartFilterBar:SmartFilterBar>
+						</f:content>
+					</f:DynamicPageHeader>
+				</f:header>
+				<f:content>
+					<core:Fragment id="idManageOrderWorklistFragment" fragmentName="sap.i2d.mpe.lib.commons1.fragments.ManageOrderWorklist" type="XML"/>
+				</f:content>
+			</f:DynamicPage>
+		</semantic:content>
+		<semantic:messagesIndicator>
+			<semantic:MessagesIndicator id="idErrorMessageCountToggleButton" press="onHandleMessagesButtonPress"/>
+		</semantic:messagesIndicator>
+	</semantic:FullscreenPage>
+</mvc:View>

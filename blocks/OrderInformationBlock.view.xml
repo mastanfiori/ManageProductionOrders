@@ -1,0 +1,207 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	controllerName="i2d.mpe.orders.manages1.blocks.OrderInformationBlockController">
+	<VBox id="idVBox">
+		<f:Form id="FormDisplayColumn_threeGroups234" editable="false">
+			<f:layout>
+				<f:ColumnLayout id="idOrderInfoBlockColLayout" columnsM="2" columnsL="3" columnsXL="3" labelCellsLarge="3"/>
+			</f:layout>
+			<f:formContainers>
+				<!--General Section-->
+				<f:FormContainer id="idContainerGeneral" title="{common_i18n>General}">
+					<f:formElements>
+						<f:FormElement id="idFormProdPlant" label="{common_i18n>ProdPlant}" tooltip="{common_i18n>ProdPlant}">
+							<f:fields>
+								<Text id="idTextProdPlant" text="{ProductionPlant}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormLongText" label="{common_i18n>ManufOrderLongText}" tooltip="{common_i18n>ManufOrderLongText}"
+							visible="{parts:[{path:'OrderLongText'}], formatter:'.formatter.getOrderTextVisible'}">
+							<f:fields>
+								<!-- TEXT is shown when ManufacturingOrderText.length <= 200 -->
+								<Text id="idTextLongText" text="{OrderLongText}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormOrderLongText" label="{common_i18n>ManufOrderLongText}" tooltip="{common_i18n>ManufOrderLongText}"
+							visible="{parts:[{path:'OrderLongText'}], formatter:'.formatter.getOrderLinkVisible'}">
+							<f:fields>
+								<!-- LINK is shown when ManufacturingOrderText.length > 200 -->
+								<Link id="linkLongtext" press="handleLongTextLinkPress" text="{parts:[{path:'OrderLongText'}], formatter:'.formatter.getLinkText'}"/>
+								<!-- Below control retains the original value of order text, which is used to display in popover in controller file (handleLongTextLinkPress function ) -->
+								<Text id="hiddenTextField" visible="false" text="{OrderLongText}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormMRPArea" label="{common_i18n>MRPArea}" tooltip="{common_i18n>MRPArea}"
+							visible="{= ${MRPArea} !== '' &amp;&amp; ${MRPArea} !== null}">
+							<f:fields>
+								<Text id="idTextMRPArea" text="{parts:[{path:'MRPArea'}, {path:'MRPAreaText'}]}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormPlanningPlant" label="{common_i18n>PlanningPlant}" tooltip="{common_i18n>PlanningPlant}"
+							visible="{= ${MRPPlant} !== '' &amp;&amp; ${MRPPlant} !== null}">
+							<f:fields>
+								<Text id="idTextPlanningPlant" text="{parts:[{path:'MRPPlant'}, {path:'MRPPlantName'}]}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormProdLine" label="{common_i18n>ProdLine}" tooltip="{common_i18n>ProdLine}"
+							visible="{= ${ProductionLine} !== '' &amp;&amp; ${ProductionLine} !== null}">
+							<f:fields>
+								<Text id="idTextProdLine" text="{ProductionLine}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormProductionVersion" label="{common_i18n>ProdVersion}" tooltip="{common_i18n>ProdVersion}"
+							visible="{= ${ProductionVersion} !== '' &amp;&amp; ${ProductionVersion} !== null}">
+							<f:fields>
+								<Text id="idTextProductionVersion" text="{parts:[{path:'ProductionVersion'}, {path:'ProductionVersionText'}]}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormOrdPriority" label="{common_i18n>OrdPriority}" tooltip="{common_i18n>OrdPriority}"
+							visible="{= ${ManufacturingOrderImportance} !== '' &amp;&amp; ${ManufacturingOrderImportance} !== null}">
+							<f:fields>
+								<Text id="idTextOrdPriority" text="{ManufacturingOrderImportance}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormMRPController" label="{common_i18n>MRPController}" tooltip="{common_i18n>MRPController}"
+							visible="{= ${MRPController} !== '' &amp;&amp; ${MRPController} !== null}">
+							<f:fields>
+								<Text id="idTextMRPController" text="{MRPController}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormSupOrder" label="{common_i18n>SupOrder}" tooltip="{common_i18n>SupOrder}"
+							visible="{= ${MfgOrderSuperiorMfgOrder} !== '' &amp;&amp; ${MfgOrderSuperiorMfgOrder} !== null}">
+							<f:fields>
+								<Text id="idTextSupOrder" text="{MfgOrderSuperiorMfgOrder}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormWBSElement" label="{common_i18n>WBSElement}" tooltip="{common_i18n>WBSElement}"
+							visible="{= ${WBSElement} !== '' &amp;&amp; ${WBSElement} !== null}">
+							<f:fields>
+								<Text id="idTextWBSElement" text="{parts:[{path:'WBSElement'}, {path:'WBSDescription'}]}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormSalesDocument" label="{common_i18n>SalesDocument}" tooltip="{common_i18n>SalesDocument}"
+							visible="{= ${SalesDocument} !== '' &amp;&amp; ${SalesDocument} !== null}">
+							<f:fields>
+								<Text id="idTextSalesDocument" text="{SalesDocument}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormSalesDocItem" label="{common_i18n>SalesDocumentItem}" tooltip="{common_i18n>SalesDocumentItem}"
+							visible="{= ${SalesDocumentItem} !== '000000' &amp;&amp; ${SalesDocumentItem} !== null}">
+							<f:fields>
+								<Text id="idTextSalesDocItem" text="{SalesDocumentItem}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormCustomer" label="{common_i18n>Customer}" tooltip="{common_i18n>Customer}"
+							visible="{= ${CustomerName} !== '' &amp;&amp; ${CustomerName} !== null}">
+							<f:fields>
+								<Text id="idTextCustomer" text="{CustomerName}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idFormIsflexible" label="{/#C_ManageProductionOrderType/ProdnProcgIsFlexible/@sap:label}"
+							tooltip="{/#C_ManageProductionOrderType/ProdnProcgIsFlexible/@sap:label}" visible="{=${OrderIsShopFloorOrder} === 'X'}">
+							<f:fields>
+								<Text id="idTextIsFlexible" text="{ProdnProcgFlexibilityIndName}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<!--END General Section-->
+				<!--Date/time Section-->
+				<f:FormContainer id="idContainerDateTimes" title="{common_i18n>DatesTimes}">
+					<f:formElements>
+						<f:FormElement id="idElemScheduledStart" label="{common_i18n>ScheduledStart}" tooltip="{common_i18n>ScheduledStart}"
+							visible="{= ${MfgOrderScheduledStartDate} !== '' &amp;&amp; ${MfgOrderScheduledStartDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextSchedStart"
+									text="{path: 'MfgOrderScheduledStartDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}, { path:'MfgOrderScheduledStartTime', type: 'sap.ui.model.odata.type.Time', formatOptions: { pattern : 'HH:mm' } }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemScheduledEnd" label="{common_i18n>ScheduledEnd}" tooltip="{common_i18n>ScheduledEnd}"
+							visible="{= ${MfgOrderScheduledEndDate} !== '' &amp;&amp; ${MfgOrderScheduledEndDate} !== null}">
+							<f:fields>
+								<!--<Text text="{MfgOrderScheduledEndDate},{MfgOrderScheduledEndTime}"/>-->
+								<Text id="idOrderInfoBlockTextSchedEnd"
+									text="{path: 'MfgOrderScheduledEndDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}, { path:'MfgOrderScheduledEndTime', type: 'sap.ui.model.odata.type.Time', formatOptions: { pattern : 'HH:mm' } }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemActualStart" label="{common_i18n>ActualStart}" tooltip="{common_i18n>ActualStart}"
+							visible="{= ${MfgOrderActualStartDate} !== '' &amp;&amp; ${MfgOrderActualStartDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextActualStart"
+									text="{path: 'MfgOrderActualStartDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}, { path:'MfgOrderActualStartTime', type: 'sap.ui.model.odata.type.Time', formatOptions: { pattern : 'HH:mm' } }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemActualEnd" label="{common_i18n>ActualEnd}" tooltip="{common_i18n>ActualEnd}"
+							visible="{= ${MfgOrderActualEndDate} !== '' &amp;&amp; ${MfgOrderActualEndDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextActualEnd"
+									text="{path: 'MfgOrderActualEndDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemPlannedStart" label="{common_i18n>PlannedStart}" tooltip="{common_i18n>PlannedStart}"
+							visible="{= ${MfgOrderPlannedStartDate} !== '' &amp;&amp; ${MfgOrderPlannedStartDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextPlannedStart"
+									text="{path: 'MfgOrderPlannedStartDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}, { path:'MfgOrderPlannedStartTime', type: 'sap.ui.model.odata.type.Time', formatOptions: { pattern : 'HH:mm' } }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemPlannedEnd" label="{common_i18n>PlannedEnd}" tooltip="{common_i18n>PlannedEnd}"
+							visible="{= ${MfgOrderPlannedEndDate} !== '' &amp;&amp; ${MfgOrderPlannedEndDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextPlannedEnd"
+									text="{path: 'MfgOrderPlannedEndDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}, { path:'MfgOrderPlannedEndTime', type: 'sap.ui.model.odata.type.Time', formatOptions: { pattern : 'HH:mm' } }"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemScheduledRelease" label="{common_i18n>ScheduledRelease}" tooltip="{common_i18n>ScheduledRelease}"
+							visible="{= ${MfgOrderScheduledReleaseDate} !== '' &amp;&amp; ${MfgOrderScheduledReleaseDate} !== null}">
+							<f:fields>
+								<Text id="idOrderInfoBlockTextSchedRelease"
+									text="{path: 'MfgOrderScheduledReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {format: 'YYYYMMMEEEd', UTC:true}}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+				<!--END Date/time Section-->
+				<!--Date/time Section-->
+				<f:FormContainer id="idContainerQuantities" title="{common_i18n>Quantities}">
+					<f:formElements>
+						<f:FormElement id="idElemTotalQuantity" label="{common_i18n>TotalQuantity}" tooltip="{common_i18n>TotalQuantity}"
+							visible="{= ${MfgOrderPlannedYieldQty} !== '' &amp;&amp; ${MfgOrderPlannedYieldQty} !== null}">
+							<f:fields>
+								<ObjectNumber id="idOrderInfoBlockTextTotalQty" number="{path: 'MfgOrderPlannedYieldQty', type: 'sap.ui.model.odata.type.Decimal'}" unit="{ProductionUnit}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemConfirmedYield" label="{common_i18n>ConfirmedYield}" tooltip="{common_i18n>ConfirmedYield}"
+							visible="{= ${MfgOrderConfirmedYieldQty} !== '' &amp;&amp; ${MfgOrderConfirmedYieldQty} !== null}">
+							<f:fields>
+								<ObjectNumber id="idOrderInfoBlockTextConfirmedYield" number="{path: 'MfgOrderConfirmedYieldQty', type: 'sap.ui.model.odata.type.Decimal'}" unit="{ProductionUnit}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemConfirmedScrap" label="{common_i18n>ConfirmedScrap}" tooltip="{common_i18n>ConfirmedScrap}"
+							visible="{= ${MfgOrderConfirmedScrapQty} !== '' &amp;&amp; ${MfgOrderConfirmedScrapQty} !== null}">
+							<f:fields>
+								<ObjectNumber id="idOrderInfoBlockTextConfirmedScrap" number="{path: 'MfgOrderConfirmedScrapQty', type: 'sap.ui.model.odata.type.Decimal'}" unit="{ProductionUnit}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemGRQuantity" label="{common_i18n>GRQuantity}" tooltip="{common_i18n>GRQuantity}"
+							visible="{= ${ActualDeliveredQuantity} !== '' &amp;&amp; ${ActualDeliveredQuantity} !== null}">
+							<f:fields>
+								<ObjectNumber id="idOrderInfoBlockTextDeliveredQty" number="{path: 'ActualDeliveredQuantity', type: 'sap.ui.model.odata.type.Decimal'}" unit="{ProductionUnit}"/>
+							</f:fields>
+						</f:FormElement>
+						<f:FormElement id="idElemOpenQuantity" label="{common_i18n>OpenQuantity}" tooltip="{common_i18n>OpenQuantity}"
+							visible="{= ${OrderOpenQuantity} !== '' &amp;&amp; ${OrderOpenQuantity} !== null}">
+							<f:fields>
+								<ObjectNumber id="idOrderInfoBlockOpenQty" number ="{path: 'OrderOpenQuantity', type: 'sap.ui.model.odata.type.Decimal'}" unit="{ProductionUnit}"/>
+							</f:fields>
+						</f:FormElement>
+					</f:formElements>
+				</f:FormContainer>
+			</f:formContainers>
+		</f:Form>
+	</VBox>
+</core:FragmentDefinition>

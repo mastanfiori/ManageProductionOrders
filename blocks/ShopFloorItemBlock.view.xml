@@ -1,0 +1,90 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="i2d.mpe.orders.manages1.blocks.ShopFloorItemBlockController" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns="sap.m">
+	<smartTable:SmartTable beforeRebindTable="onHandleRebindShopFloorItemTable" demandPopin="true" header="{i18n>SerialNumbers}"
+		enableAutoBinding="{DetailModel>/bEnableAutoBinding}" entitySet="C_MfgOrderShopFloorItem" id="idShopFloorItemSmartTable" persistencyKey='pKeyShpFloorItemTab'
+		width="100%" showRowCount="false" tableType="ResponsiveTable" useExportToExcel="true" useTablePersonalisation="true"
+		useVariantManagement="false" dataReceived="onDataReceivedShopFloorItemTable"
+		ignoreFromPersonalisation="MaterialName">
+		<smartTable:customToolbar>
+			<OverflowToolbar design="Transparent" id="idShopFloorToolbar">
+			</OverflowToolbar>
+		</smartTable:customToolbar>
+		<Table fixedLayout="false" id="idShopFloorItemsTable" growing="true" growingThreshold="10" itemPress="handleSerialNumberLinkPress">
+			<columns>
+				<Column id="idColumnSerialNumber" hAlign="Begin" customData:p13nData='\{"columnKey":"SerialNumber", "columnIndex":"0", "leadingProperty":"SerialNumber"\}'>
+					<header>
+						<Text id="idTextSerialNumber" text="{i18n>SerialNumber}" tooltip="{i18n>SerialNumber}"/>
+					</header>
+				</Column>
+				<Column id="idColumnMaterial" hAlign="Begin" customData:p13nData='\{"columnKey":"Material", "columnIndex":"1", "leadingProperty":["Material","MaterialName","MRPArea"]\}'>
+					<header>
+						<Text id="idTextMaterial" text="{i18n>Material}" tooltip="{i18n>Material}"/>
+					</header>
+				</Column>
+				<Column id="idColumnSFIProductionStatusName" hAlign="Begin" customData:p13nData='\{"columnKey":"SFIProductionStatusName", "columnIndex":"2", "leadingProperty":["SFIProductionStatusName"]\}'>
+					<header>
+						<Text id="idTextSFIProductionStatusName" text="{i18n>serialNumberStatus}" tooltip="{i18n>serialNumberStatus}"/>
+					</header>
+				</Column>
+				<!--<Column hAlign="Begin"-->
+				<!--	customData:p13nData='\{"columnKey":"OperationData", "columnIndex":"3", "leadingProperty":["ManufacturingOrderOperation","MfgOrderOperationText"]\}'>-->
+				<!--	<header>-->
+				<!--		<Text text="{i18n>MfgOrderOperationText}" tooltip="{i18n>OperationTootlip}"/>-->
+				<!--	</header>-->
+				<!--</Column>-->
+				<!--	<Column hAlign="Begin"-->
+				<!--	customData:p13nData='\{"columnKey":"OperationActivityData", "columnIndex":"4", "leadingProperty":["OpActyNtwkElementExternalID","OperationActivityName"]\}'>-->
+				<!--	<header>-->
+				<!--		<Text text="{i18n>OperationActivity}" tooltip="{i18n>OperationActivity}"/>-->
+				<!--	</header>-->
+				<!--</Column>-->
+				<!--<Column hAlign="Begin" customData:p13nData='\{"columnKey":"SASStatusName", "columnIndex":"5", "leadingProperty":["SASStatusName"]\}'>-->
+				<!--	<header>-->
+				<!--		<Text text="{i18n>OAStatus}" tooltip="{i18n>OAStatus}"/>-->
+				<!--	</header>-->
+				<!--</Colum
+				n>-->
+			</columns>
+			<items id="items">
+				<ColumnListItem id="idColumnlist" vAlign="Middle" type="Navigation">
+					<cells>
+						<VBox id="idBoxSerialNumber" class="sapUiTinyMarginTopBottom">
+							<!--<Link class="sapMLabelBold" text="{path: 'SerialNumber'}" press="handleSerialNumberLinkPress"></Link>-->
+							<ObjectIdentifier id="titleSerialNumber" title="{SerialNumber}" titleActive="false" tooltip="{SerialNumber}"/>
+						</VBox>
+					</cells>
+					<cells>
+						<VBox id="idBoxMaterial" class="sapUiTinyMarginTopBottom" alignItems="Start">
+							<Link id="idLinkMaterial" text="{path: 'Material'}" press="handleMaterialLinkPress"></Link>
+							<Text id="idTextMaterialName" text="{path: 'MaterialName'}" tooltip="{MaterialName}"></Text>
+						</VBox>
+					</cells>
+					<cells>
+						<Text id="idListTextSFIProductionStatusName" text="{SFIProductionStatusName}" tooltip="{SFIProductionStatusName}"/>
+					</cells>
+					<!--<cells>-->
+					<!--	<VBox class="sapUiTinyMarginTopBottom" alignItems="Begin">-->
+					<!--		<Label text="{path: 'ManufacturingOrderOperation'}" tooltip="{ManufacturingOrderOperation}"></Label>-->
+					<!--		<Text text="{path: 'MfgOrderOperationText'}" tooltip="{MfgOrderOperationText}"></Text>-->
+					<!--	</VBox>-->
+					<!--</cells>-->
+					<!--<cells>-->
+					<!--	<VBox class="sapUiTinyMarginTopBottom" alignItems="Begin">-->
+					<!--		<Label text="{path: 'OpActyNtwkElementExternalID'}" tooltip="{OpActyNtwkElementExternalID}"></Label>-->
+					<!--		<Text text="{path: 'OperationActivityName'}" tooltip="{OperationActivityName}"></Text>-->
+					<!--	</VBox>-->
+					<!--</cells>-->
+					<!--<cells>-->
+					<!--	<Text text="{SASStatusName}" tooltip="{SASStatusName}"/>-->
+					<!--</cells>-->
+				</ColumnListItem>
+			</items>
+		</Table>
+	</smartTable:SmartTable>
+</mvc:View>

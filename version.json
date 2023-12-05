@@ -1,0 +1,13 @@
+{
+  "application": "i2d.mpe.orders.manages1",
+  "version": "9.0.18",
+  "buildNumber": "30",
+  "buildId": "30",
+  "branch": "detached",
+  "revision": "248da4f5eb1a701bd50c283369aaac7de12ab7f9",
+  "GitURL": "",
+  "buildStatus": "${fiori.buildStatus}",
+  "translationComplete": "${fiori.translationComplete}",
+  "cidi": "${fiori.cidi}",
+  "cfdCM": "${fiori.cfdCM}"
+}

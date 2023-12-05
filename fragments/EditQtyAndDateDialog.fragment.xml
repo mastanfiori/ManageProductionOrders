@@ -1,0 +1,83 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:layout="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Dialog id="editQtyAndDate" class="sapUiContentPadding" contentWidth="auto" contentHeight="auto"
+		title="{= ${i18n>editQtyAndDate} + ' ' + ${ManufacturingOrder}} " busy="{EditQtyAndDateData>/busy}" busyIndicatorDelay="0">
+		<content >
+			<layout:SimpleForm id="idEditQtyDateLayout" columnsL="1" columnsM="1" columnsS="1" labelSpanL="12" labelSpanM="12" labelSpanS="12" layout="ResponsiveGridLayout"
+				editable="true">
+				<!--Order Qunatity -->
+				<Label id="idEditQtyDateLabelOrderQty" text="{i18n>orderQuantity}" labelFor="EditQtyAndDateOrderQty"/>
+				<Input id="EditQtyAndDateOrderQty" value="{path: 'MfgOrderPlannedTotalQty', type: 'sap.ui.model.odata.type.Decimal'}" valueState="{EditQtyAndDateData>/PlannedTotalQtyValueState}" change="_onChangeOderQuantity">
+					<layoutData>
+						<l:GridData id="idEditQtyDateInputMfgOrderPlndTotalQtyGridDate" span="XL11 L10 M10 S10"/>
+					</layoutData>
+				</Input>
+				<!--Order Quantity Unit of Measure -->
+				<!--<Text id="EditQtyAndDateOrderUnit" text="{ProductionUnit}" -->
+				<!--valueState="{EditQtyAndDateData>/ProductionUnitValueState}">-->
+				<Text id="idEditQtyDateTextOrderQtyUoM" text="{ProductionUnit}">
+					<layoutData>
+						<l:GridData id="idEditQtyDateTextOrderQtyUoMGrid" span="XL3 L2 M2 S2"/>
+					</layoutData>
+				</Text>
+				<!--Scrap Portion -->
+				<Label id="idEditQtyDateLabelScrapProtion" text="{i18n>scrapProtion}" labelFor="EditQtyAndDateScrapPortion"/>
+				<Input id="EditQtyAndDateScrapPortion" value="{path: 'MfgOrderPlannedScrapQty', type: 'sap.ui.model.odata.type.Decimal'}"
+					valueState="{EditQtyAndDateData>/PlannedScrapQtyValueState}" change="_onChangeScrapQuantity">
+					<layoutData>
+						<l:GridData id="idEditQtyDateInputMfgOrderPlndScrapQtyGridDate" span="XL11 L10 M10 S10"/>
+					</layoutData>
+				</Input>
+				<!--Scrap Portion Unit of Measure -->
+				<Text id="idEditQtyDateTextScrapPortionUoM" text="{ProductionUnit}">
+					<layoutData>
+						<l:GridData id="idEditQtyDateTextScrapPortionUoMGrid" span="XL3 L2 M2 S2"/>
+					</layoutData>
+				</Text>
+				<!--Scheduling Type -->
+				<Label id="idEditQtyDateLabelSchedType" text="{i18n>schedulingType}" labelFor="EditQtyAndDateComboBox"/>
+				<!--<ComboBox id="EditQtyAndDateComboBox" selectionChange="onChangeHoldType" selectedKey="{EditQtyAndDateData>/BasicSchedulingType}" valueState="{/holdTypeValueState}"-->
+				<ComboBox id="EditQtyAndDateComboBox" selectedKey="{EditQtyAndDateData>/BasicSchedulingType}"
+					valueState="{EditQtyAndDateData>/BasicSchedulingTypeValueState}" change="_onChangeSchedulingType"
+					items="{EditQtyAndDateData>/SchedulingType}" fieldGroupIds="reasonValue">
+					<core:Item id="idEditQtyAndDateComboBoxItem" key="{EditQtyAndDateData>id}" text="{EditQtyAndDateData>name}"></core:Item>
+				</ComboBox>
+				<!--Base Start -->
+				<Label id="idEditQtyDateLabelBaseStart" text="{i18n>baseStart}"/>
+				<!--<DateTimePicker dateValue="{EditQtyAndDateData>/MfgOrderPlannedStartDate}"/>-->
+				<VBox id="idEditQtyDateVBOXDateMsg">
+					<DatePicker id="EditQtyAndDateBaseStart" value="{ path:'MfgOrderPlannedStartDate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true} }"
+						valueState="{EditQtyAndDateData>/PlannedStartDateValueState}" change="_onChangeStartDatePicker"/>
+					<!-- Message strip for Current Date Schedule type (Start date) -->
+					<MessageStrip id="idStartWarningMessageCurrent" text="{i18n>warningStartDateCurrentDate}" type="Information" enableFormattedText="true"
+						showIcon="true" showCloseButton="false"></MessageStrip>
+					<!-- Message strip for Backward Schedule type -->
+					<MessageStrip id="idEndWarningMessageBackward" text="{i18n>warningStartDateBackward}" type="Information" enableFormattedText="true"
+						showIcon="true" showCloseButton="false"></MessageStrip>
+					<!--Base End -->
+					<Label id="idEditQtyDateLabelBaseEnd" text="{i18n>baseEnd}" class="sapUiSmallMarginTop"/>
+					<DatePicker id="EditQtyAndDateBaseEnd" value="{ path:'MfgOrderPlannedEndDate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true} }" 
+					valueState="{EditQtyAndDateData>/PlannedEndDateValueState}" change="_onChangeEndDatePicker"/>
+					<!-- Message strip for Current Date Schedule type (End date) -->
+					<MessageStrip id="idEndWarningMessageCurrent" text="{i18n>warningEndDateCurrentDate}" type="Information" enableFormattedText="true"
+						showIcon="true" showCloseButton="false"></MessageStrip>
+					<!-- Message strip for Forward Schedule type -->
+					<MessageStrip id="idEndWarningMessageForward" text="{i18n>warningEndDateForward}" type="Information" enableFormattedText="true"
+						showIcon="true" showCloseButton="false"></MessageStrip>
+				</VBox>
+			</layout:SimpleForm>
+		</content>
+		<!--Save Edit Qty and Date -->
+		<beginButton >
+			<Button id="saveEditQtyAndDateBtn" press="onPressSaveEditQtyAndDate" text="{i18n>saveEditQtyAndDate}"/>
+		</beginButton>
+		<!--Cancel Edit Qty and Date -->
+		<endButton >
+			<Button id="cancelEditQtyAndDateBtn" press="onPressCancelEditQtyAndDate" text="{i18n>cancelEditQtyAndDate}"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

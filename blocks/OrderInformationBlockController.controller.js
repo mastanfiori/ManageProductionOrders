@@ -1,0 +1,4 @@
+/*
+ * Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+ */
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/i2d/mpe/lib/commons1/utils/formatter","sap/ui/model/resource/ResourceModel","sap/m/MessageBox"],function(C,f,R,M){"use strict";return C.extend("i2d.mpe.orders.manages1.blocks.OrderInformationBlockController",{formatter:f,onInit:function(){this.oCommonI18NModel=f._i18n;if(!this.oCommonI18NModel){this.oCommonI18NModel=this.loadI18NFile();}this.getView().setModel(this.oCommonI18NModel,"common_i18n");},loadI18NFile:function(){var i=jQuery.sap.getModulePath("sap.i2d.mpe.lib.commons1")+"/"+"i18n/i18n.properties";return new R({bundleUrl:i});},handleLongTextLinkPress:function(e){var t=this.getView().byId("hiddenTextField").getText();M.information(t,{title:this.getView().getModel("common_i18n").getProperty("ManufOrderLongText")});},});});

@@ -1,0 +1,155 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="i2d.mpe.orders.manages1.blocks.InspectionBlockController" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns="sap.m">
+	<smartTable:SmartTable beforeRebindTable="onHandleRebindInspectionLotBlock"  demandPopin="true"  header="{common_i18n>InspectionLots}"
+		enableAutoBinding="{DetailModel>/bEnableAutoBinding}" entitySet="C_Mfgordinspectionlot" id="idInspectionBlockSmartTable" persistencyKey='pKeyInspectTab' width="100%"
+		showRowCount="false" tableType="ResponsiveTable" useExportToExcel="true" useTablePersonalisation="true" useVariantManagement="false">
+		<smartTable:customData id="customdataInspection">
+			<core:CustomData id="coredataInspection" key="p13nDialogSettings" value='\{"columns":\{"visible": true, "payload": \{"visibleItemsThreshold": 8\}\}\}'/>
+		</smartTable:customData>
+		<smartTable:customToolbar>
+			<OverflowToolbar design="Transparent" id="idInspectionToolbar">
+			</OverflowToolbar>
+		</smartTable:customToolbar>
+		<Table fixedLayout="false" id="idInspectionBlockTable" growing="true" growingThreshold="10" itemPress="handleInspectionLotSelect">
+			<columns>
+				<Column
+					id="idInsBlockColInspectionLot"
+					customData:p13nData='\{"columnKey":"InspectionLot", "leadingProperty":["InspectionLot","ManufacturingOrder"]\}'>
+					<header>
+						<Text id="idTextInspectionLotNo" text="{common_i18n>InspectionLotNo}" tooltip="{common_i18n>InspectionLotNo}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspectionLotType"
+					hAlign="Begin" 
+					customData:p13nData='\{"columnKey":"InspectionLotType", "leadingProperty":["InspectionLotType","InspectionLotTypeText"] \}'>
+					<header>
+						<Text id="idTextInspectionLotType" text="{common_i18n>InspectionLotType}" tooltip="{common_i18n>InspectionLotType}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspCharacteristicCount"
+					hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspCharacteristicCount", "leadingProperty":["InspCharacteristicCount"] \}'>
+					<header>
+						<Text id="idTextInspCharacteristicCount" text="{common_i18n>InspCharacteristicCount}" tooltip="{common_i18n>InspCharacteristicCount}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspCharcsCompletedInPercent"
+					hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspCharcsCompletedInPercent", "leadingProperty":["InspCharcsCompletedInPercent","InspCharOpenCount"] \}'>
+					<header>
+						<Text id="idTextInspCharcsCompletedInPercent" text="{common_i18n>InspCharcsCompletedInPercent}" tooltip="{common_i18n>InspCharcsCompletedInPercent}"/>
+					</header>
+				</Column>
+			<!--	<Column visible="false" hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspOperationCompletedCount", "leadingProperty":["InspOperationCompletedCount"] \}'>
+					<header>
+						<Text text="{common_i18n>InspOperationCompletedCount}" tooltip="{common_i18n>InspOperationCompletedCount}"/>
+					</header>
+				</Column>-->
+				<Column
+					id="idInsBlockColInspOperationCount"
+					visible="false" hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspOperationCount", "leadingProperty":["InspOperationCount"] \}'>
+					<header>
+						<Text id="idTextInspOperationCount" text="{common_i18n>InspOperationCount}" tooltip="{common_i18n>InspOperationCount}"/>
+					</header>
+				</Column>
+				<!--<Column hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspOperationCmpltdInPercent", "leadingProperty":["InspOperationCmpltdInPercent","InspOperationCompletedCount","InspOperationCount"] \}'>
+					<header>
+						<Text text="{common_i18n>InspOperationCmpltdInPercent}" tooltip="{common_i18n>InspOperationCmpltdInPercent}"/>
+					</header>
+				</Column>-->
+				<Column
+					id="idInsBlockColInspectionLotText"
+					visible="false" 
+					customData:p13nData='\{"columnKey":"InspectionLotText", "leadingProperty":["InspectionLotText"] \}'>
+					<header>
+						<Text id="idTextInspectionLotText" text="{common_i18n>InspectionLotText}" tooltip="{common_i18n>InspectionLotText}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspectionLotQuantity"
+					visible="false" 
+					hAlign="End" customData:p13nData='\{"columnKey":"InspectionLotQuantity", "leadingProperty":["InspectionLotQuantity"] \}'>
+					<header>
+						<Text id="idTextInspectionLotQuantity" text="{common_i18n>InspectionLotQuantity}" tooltip="{common_i18n>InspectionLotQuantity}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspectionLotActualQuantity"
+					visible="false" hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspectionLotActualQuantity", "leadingProperty":["InspectionLotActualQuantity"] \}'>
+					<header>
+						<Text id="idTextInspectionLotActualQuantity" text="{common_i18n>InspectionLotActualQuantity}" tooltip="{common_i18n>InspectionLotActualQuantity}"/>
+					</header>
+				</Column>
+				<Column
+					id="idInsBlockColInspectionLotUsageDecisionCode"
+					hAlign="End" 
+					customData:p13nData='\{"columnKey":"InspectionLotUsageDecisionCode", "leadingProperty":["InspectionLotUsageDecisionCode"] \}'>
+					<header>
+						<Text id="idTextInspectionLotUsageDecisionCode" text="{common_i18n>InspectionLotUsageDecisionCode}" tooltip="{common_i18n>InspectionLotUsageDecisionCode}"/>
+					</header>
+				</Column>
+			</columns>
+			<!--<ColumnListItem type="Inactive">-->
+			<ColumnListItem id="idColumnList" type="Navigation">
+				<cells id="cells">
+					<VBox id="idVboxInspectionLot" class="sapUiTinyMarginTopBottom">
+						<ObjectIdentifier id="titleInspectionLot" title="{InspectionLot}" titleActive="false" tooltip="{InspectionLot}"/>
+						<!--<Text text="{InspectionLotText}" tooltip="{InspectionLotText}" -->
+						<!--		visible="{= ${InspectionLotText} !== '' &amp;&amp; ${InspectionLotText} !== null }"></Text>-->
+					</VBox>
+					<HBox id="idInspBlockCLIHBoxInspectionLotType" alignContent="Start" justifyContent="Start" >
+						<Text id="idInspBlockCLITextInspectionLotType" class="sapUiTinyMarginEnd" text="{parts:[{path:'InspectionLotTypeText'},{path:'InspectionLotType'}], formatter:'.formatter.getCombineDescriptionWithId'}" tooltip="{InspectionLotType}"></Text>
+					</HBox>
+					<HBox id="idInspBlockCLIHBoxInspCharacteristicCount" alignContent="End" justifyContent="End" >
+						<Text id="idInspBlockCLITextInspCharacteristicCount" class="sapUiTinyMarginBegin" text="{InspCharacteristicCount}"></Text>
+					</HBox>
+					<HBox id="idBoxOpenCount" alignContent="End" justifyContent="End" >
+						<ProgressIndicator id="idProgressOpenCount" visible="true" class="sapUiTinyMarginTop" 
+							displayValue="{parts:[{path:'InspCharOpenCount'}, {path:'InspCharacteristicCount'}], formatter: '.formatter.difference' }"
+							percentValue="{parts:[{path:'InspCharcsCompletedInPercent'}], formatter: '.formatter.setPercentValue'}"
+							showValue="true"
+							state="Success"/>
+					</HBox>
+					<!--<HBox alignContent="End" justifyContent="End" >
+						<Text class="sapUiTinyMarginBegin" text="{InspOperationCompletedCount}"></Text>
+					</HBox>-->
+					<HBox  id="idBoxInspOperationCount" alignContent="End" justifyContent="End" >
+						<Text id="idTextInspOpCount" class="sapUiTinyMarginBegin" text="{InspOperationCount}"></Text>
+					</HBox>
+					<!--<HBox alignContent="End" justifyContent="End" >
+						<ProgressIndicator visible="true" class="sapUiTinyMarginTop" 
+							displayValue="{InspOperationCompletedCount} of {InspOperationCount}"
+							percentValue="{parts:[{path:'InspOperationCmpltdInPercent'}], formatter: '.formatter.setPercentValue'}"
+							showValue="true"
+							state="Success"/>
+					</HBox>-->
+					<HBox id="idBoxInspectionLotText">
+						<Text id="idTextLotText" class="sapUiTinyMarginBegin" text="{InspectionLotText}" tooltip="{InspectionLotText}"></Text>
+					</HBox>
+					<HBox  id="idBoxInspectionLotQuantity" alignContent="End" justifyContent="End" >
+						<Text id="idTextLotQuantity" class="sapUiTinyMarginBegin" text="{path: 'InspectionLotQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'InspectionLotQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Text>
+					</HBox>
+					<HBox  id="idBoxInspectionLotActualQuantity" alignContent="End" justifyContent="End" >
+						<Text id="idTextLotActualQuantity" class="sapUiTinyMarginBegin" text="{path: 'InspectionLotActualQuantity', type: 'sap.ui.model.odata.type.Decimal'}" tooltip="{path: 'InspectionLotActualQuantity', type: 'sap.ui.model.odata.type.Decimal'}"></Text>
+					</HBox>
+					<HBox  id="idBoxInspectionLotUsageDecisionCode" alignContent="End" justifyContent="End" >
+						<Text id="idTextLotUsageDecisionCode" class="sapUiTinyMarginBegin" text="{InspectionLotUsageDecisionCode}" tooltip="{InspectionLotUsageDecisionCode}"></Text>
+					</HBox>
+				</cells>
+			</ColumnListItem>
+		</Table>
+	</smartTable:SmartTable>
+</mvc:View>
